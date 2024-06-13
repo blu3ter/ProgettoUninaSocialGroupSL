@@ -7,22 +7,36 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myjavaproject.RegistrazioneSchermata">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myjavaproject.RegistrazioneSchermata">
    <children>
-      <Text fill="#0e60d9" layoutX="36.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compila i campi per completare la registrazione:" wrappingWidth="513.336669921875">
+      <TextField fx:id="FieldNome" layoutX="295.0" layoutY="138.0" prefHeight="26.0" prefWidth="440.0" promptText="Email" />
+      <TextField fx:id="FieldCognome" layoutX="295.0" layoutY="234.0" prefHeight="26.0" prefWidth="210.0" promptText="Nome" />
+      <TextField fx:id="FieldEmail" layoutX="525.0" layoutY="234.0" prefHeight="26.0" prefWidth="210.0" promptText="Cognome" />
+      <PasswordField fx:id="FieldPassword" layoutX="295.0" layoutY="185.0" prefHeight="26.0" prefWidth="440.0" promptText="Password" />
+      <Button fx:id="ProseguiButton" layoutX="552.0" layoutY="458.0" mnemonicParsing="false" onAction="#ContinuaPrimoAccesso" prefHeight="53.0" prefWidth="182.0" style="-fx-background-color: #5856d6; -fx-background-radius: 10;" text="Apri un account" textFill="WHITE">
          <font>
-            <Font name="System Italic" size="23.0" />
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="LoginButton" layoutX="427.0" layoutY="472.0" mnemonicParsing="false" onAction="#RitornaLogin" style="-fx-background-color: trasparent;" text="Accedi qui">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Text fill="#5856d6" layoutX="295.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrazione" underline="true" wrappingWidth="431.19997558593764">
+         <font>
+            <Font name="System Bold Italic" size="53.0" />
          </font>
       </Text>
-      <Text layoutX="92.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome" wrappingWidth="34.13671875" />
-      <TextField fx:id="FieldNome" layoutX="143.0" layoutY="136.0" />
-      <Text layoutX="393.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cognome" wrappingWidth="54.936767578125" />
-      <TextField fx:id="FieldCognome" layoutX="459.0" layoutY="135.0" />
-      <Text layoutX="92.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="34.13671875" />
-      <Text layoutX="393.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="68.53671264648438" />
-      <TextField fx:id="FieldEmail" layoutX="143.0" layoutY="232.0" />
-      <PasswordField fx:id="FieldPassword" layoutX="459.0" layoutY="233.0" />
-      <Button fx:id="ProseguiButton" layoutX="168.0" layoutY="355.0" mnemonicParsing="false" onAction="#ContinuaPrimoAccesso" text="Completa la registrazione" />
-      <Button fx:id="LoginButton" layoutX="411.0" layoutY="355.0" mnemonicParsing="false" onAction="#RitornaLogin" text="Ho gia un account" />
+      <TextField alignment="TOP_LEFT" layoutX="295.0" layoutY="292.0" prefHeight="110.0" prefWidth="440.0" promptText="Inserisci una biografia (facoltativo)" />
+      <Text fill="#5856d6" layoutX="57.0" layoutY="65.0" opacity="0.67" strokeType="OUTSIDE" strokeWidth="0.0" text="Unina Social Group" wrappingWidth="237.28457641601562">
+         <font>
+            <Font name="System Bold Italic" size="27.0" />
+         </font>
+      </Text>
+      <Text layoutX="57.0" layoutY="189.0" opacity="0.33" strokeType="OUTSIDE" strokeWidth="0.0" text="Compilando i dati, e cliccando sul pulsante ''Apri un account'' accetti i termini e le condizioni d’uso." wrappingWidth="163.73675727844238">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
+      <Text layoutX="294.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Possiedi già un account?" wrappingWidth="132.8000244140626" />
    </children>
 </AnchorPane>

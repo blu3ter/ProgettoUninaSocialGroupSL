@@ -18,7 +18,7 @@ public class HelloController {
 
     //in questa parte apri la pagina per registrarti
 
-    public void SwitchSchermataRegitrazione(ActionEvent actionEvent) throws IOException {
+    public void SwitchSchermataRegistrazione(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("RegistrazioneSchermata.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -30,4 +30,5 @@ public class HelloController {
 
     public void VaiAllaHomepage(ActionEvent actionEvent) {
     }
+
 }
