@@ -19,7 +19,7 @@
       </Text>
       <HBox layoutY="500.0" prefHeight="100.0" prefWidth="900.0" style="-fx-background-color: #5856d6;">
          <children>
-            <Label alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Entra in contatto con studenti che la pensano allo stesso modo ed esplora interessi condivisi" textAlignment="CENTER">
+            <Label alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Entra in contatto con studenti che la pensano allo stesso modo ed esplora interessi condivisi" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

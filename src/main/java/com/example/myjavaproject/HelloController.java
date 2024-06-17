@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloController {
-    public Button AccediButton;
-    public Button IscrivitiBluButton;
-    public Button IscrivitiBiancoButton;
+    private Button AccediButton;
+    private Button IscrivitiBluButton;
+    private Button IscrivitiBiancoButton;
 
 
     //in questa parte apri la pagina per registrarti
@@ -31,4 +31,27 @@ public class HelloController {
     public void VaiAllaHomepage(ActionEvent actionEvent) {
     }
 
+    public Button getIscrivitiBiancoButton() {
+        return IscrivitiBiancoButton;
+    }
+
+    public void setIscrivitiBiancoButton(Button iscrivitiBiancoButton) {
+        IscrivitiBiancoButton = iscrivitiBiancoButton;
+    }
+
+    public Button getAccediButton() {
+        return AccediButton;
+    }
+
+    public void setAccediButton(Button accediButton) {
+        AccediButton = accediButton;
+    }
+
+    public Button getIscrivitiBluButton() {
+        return IscrivitiBluButton;
+    }
+
+    public void setIscrivitiBluButton(Button iscrivitiBluButton) {
+        IscrivitiBluButton = iscrivitiBluButton;
+    }
 }

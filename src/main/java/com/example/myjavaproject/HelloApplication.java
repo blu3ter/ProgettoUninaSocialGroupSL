@@ -1,5 +1,8 @@
 package com.example.myjavaproject;
 
+import java.util.Scanner;
+
+import Util.ConnectionUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,8 +11,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+
+    static Scanner scan = new Scanner(System.in);
+    //connect
     @Override
     public void start(Stage stage) throws IOException {
+
+        ConnectionUtil db = new ConnectionUtil();
+        db.conn("social_group" , " postgres", "1234");
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("UninaSocialGroup");
