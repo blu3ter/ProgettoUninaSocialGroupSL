@@ -29,6 +29,9 @@ public class HelloController {
     }
 
     public void VaiAllaHomepage(ActionEvent actionEvent) {
+
+
+
     }
 
     public Button getIscrivitiBiancoButton() {
