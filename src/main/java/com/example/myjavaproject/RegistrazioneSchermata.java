@@ -9,11 +9,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegistrazioneSchermata {
@@ -24,6 +26,8 @@ public class RegistrazioneSchermata {
     public Button ProseguiButton;
     public Button LoginButton;
     public TextField FieldUsername;
+    public TextField FieldBio;
+    public Text RegistrazioneAvvenuta;
 
     public void ContinuaPrimoAccesso(ActionEvent actionEvent) {
         String nome = FieldNome.getText();
@@ -31,21 +35,55 @@ public class RegistrazioneSchermata {
         String email = FieldEmail.getText();
         String password = FieldPassword.getText();
         String username = FieldUsername.getText();
+        String bio = FieldBio.getText();
 
-        String sql = "INSERT INTO  utente (nome, cognome, email, password, username) VALUES (?, ?, ?, ?, ?)";
+        // Verifico che tutti i campi obbligatori siano non nulli e non vuoti
+        if (nome == null || nome.trim().isEmpty() ||
+                cognome == null || cognome.trim().isEmpty() ||
+                email == null || email.trim().isEmpty() ||
+                password == null || password.trim().isEmpty() ||
+                username == null || username.trim().isEmpty()) {
+
+            showAlert("Errore", "Tutti i campi obbligatori devono essere riempiti.");
+            return;
+        }
+
+        String checkEmailSql = "SELECT COUNT(*) FROM utente WHERE email = ?";
+        String checkUsernameSql = "SELECT COUNT(*) FROM utente WHERE username = ?";
+        String insertSql = "INSERT INTO utente (nome, cognome, email, password, username, bio) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement checkEmailStmt = conn.prepareStatement(checkEmailSql);
+             PreparedStatement checkUsernameStmt = conn.prepareStatement(checkUsernameSql);
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
 
-            pstmt.setString(1, nome);
-            pstmt.setString(2, cognome);
-            pstmt.setString(3, email);
-            pstmt.setString(4, password);
-            pstmt.setString(5, username);
+            // Verifica se l'email esiste già
+            checkEmailStmt.setString(1, email);
+            ResultSet rsEmail = checkEmailStmt.executeQuery();
+            if (rsEmail.next() && rsEmail.getInt(1) > 0) {
+                showAlert("Errore", "Esiste già un'email uguale.");
+                return;
+            }
 
-            pstmt.executeUpdate();
+            // Verifica se l'username esiste già
+            checkUsernameStmt.setString(1, username);
+            ResultSet rsUsername = checkUsernameStmt.executeQuery();
+            if (rsUsername.next() && rsUsername.getInt(1) > 0) {
+                showAlert("Errore", "Esiste già un username uguale.");
+                return;
+            }
 
-            showAlert("Successo", "Utente registrato con successo!");
+            // Inserimento dell'utente
+            insertStmt.setString(1, nome);
+            insertStmt.setString(2, cognome);
+            insertStmt.setString(3, email);
+            insertStmt.setString(4, password);
+            insertStmt.setString(5, username);
+            insertStmt.setString(6, bio);
+
+            insertStmt.executeUpdate();
+
+            RegistrazioneAvvenuta.setVisible(true);
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -30,8 +30,8 @@
          </children>
       </HBox>
       <Text layoutX="61.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scopri e unisciti ai gruppi basati sui tuoi interessi" wrappingWidth="270.1367492675781" />
-      <TextField layoutX="545.0" layoutY="202.0" prefHeight="25.0" prefWidth="210.0" promptText="email" style="-fx-background-radius: 20;" />
-      <PasswordField layoutX="545.0" layoutY="257.0" prefHeight="25.0" prefWidth="210.0" promptText="password" style="-fx-background-radius: 20;" />
+      <TextField fx:id="FieldEmail" layoutX="545.0" layoutY="202.0" prefHeight="25.0" prefWidth="210.0" promptText="email" style="-fx-background-radius: 20;" />
+      <PasswordField fx:id="FieldPassword" layoutX="545.0" layoutY="257.0" prefHeight="25.0" prefWidth="210.0" promptText="password" style="-fx-background-radius: 20;" />
       <Button fx:id="AccediButton" layoutX="611.0" layoutY="314.0" mnemonicParsing="false" onAction="#VaiAllaHomepage" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #0e60d9; -fx-background-radius: 5;" text="Accedi" textFill="WHITE" />
       <Button fx:id="IscrivitiBluButton" layoutX="61.0" layoutY="314.0" mnemonicParsing="false" onAction="#SwitchSchermataRegistrazione" style="-fx-background-color: #0e60d9; -fx-background-radius: 5;" text="Iscriviti adesso" textFill="WHITE" />
       <Text fill="#5856d6" layoutX="81.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unina Social Group" wrappingWidth="493.336669921875">

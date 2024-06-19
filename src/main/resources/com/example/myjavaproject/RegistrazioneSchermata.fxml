@@ -9,9 +9,9 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myjavaproject.RegistrazioneSchermata">
    <children>
-      <TextField fx:id="FieldNome" layoutX="295.0" layoutY="138.0" prefHeight="26.0" prefWidth="440.0" promptText="Email" />
-      <TextField fx:id="FieldCognome" layoutX="295.0" layoutY="234.0" prefHeight="26.0" prefWidth="210.0" promptText="Nome" />
-      <TextField fx:id="FieldEmail" layoutX="525.0" layoutY="234.0" prefHeight="26.0" prefWidth="210.0" promptText="Cognome" />
+      <TextField fx:id="FieldNome" layoutX="295.0" layoutY="239.0" prefHeight="26.0" prefWidth="210.0" promptText="Nome" />
+      <TextField fx:id="FieldCognome" layoutX="524.0" layoutY="239.0" prefHeight="26.0" prefWidth="210.0" promptText="Cognome" />
+      <TextField fx:id="FieldEmail" layoutX="295.0" layoutY="137.0" prefHeight="26.0" prefWidth="440.0" promptText="Email" />
       <PasswordField fx:id="FieldPassword" layoutX="295.0" layoutY="185.0" prefHeight="26.0" prefWidth="440.0" promptText="Password" />
       <Button fx:id="ProseguiButton" layoutX="552.0" layoutY="498.0" mnemonicParsing="false" onAction="#ContinuaPrimoAccesso" prefHeight="53.0" prefWidth="182.0" style="-fx-background-color: #5856d6; -fx-background-radius: 10;" text="Apri un account" textFill="WHITE">
          <font>
@@ -26,7 +26,7 @@
             <Font name="System Bold Italic" size="53.0" />
          </font>
       </Text>
-      <TextField alignment="TOP_LEFT" layoutX="295.0" layoutY="347.0" prefHeight="110.0" prefWidth="440.0" promptText="Inserisci una biografia (facoltativo)" />
+      <TextField fx:id="FieldBio" alignment="TOP_LEFT" layoutX="295.0" layoutY="347.0" prefHeight="110.0" prefWidth="440.0" promptText="Inserisci una biografia (facoltativo)" />
       <Text fill="#5856d6" layoutX="57.0" layoutY="65.0" opacity="0.67" strokeType="OUTSIDE" strokeWidth="0.0" text="Unina Social Group" wrappingWidth="237.28457641601562">
          <font>
             <Font name="System Bold Italic" size="27.0" />
@@ -39,5 +39,10 @@
       </Text>
       <Text layoutX="294.0" layoutY="529.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Possiedi già un account?" wrappingWidth="132.8000244140626" />
       <TextField fx:id="FieldUsername" layoutX="294.0" layoutY="287.0" prefHeight="26.0" prefWidth="440.0" promptText="Username" style="-fx-background-radius: 5;" />
+      <Text fx:id="RegistrazioneAvvenuta" layoutX="57.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sei stato registrato con successo!" visible="false" wrappingWidth="163.73675727844238">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
