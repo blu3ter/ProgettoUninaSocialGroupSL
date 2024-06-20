@@ -1,15 +1,22 @@
 package com.example.myjavaproject;
 
-import Util.DBUtil;
+import DAO.ContenutoDAO;
+import DAO.GruppoDAO;
+import DAO.PartecipanteDAO;
+import Oggetti.Contenuto;
+import Oggetti.Gruppo;
+import Oggetti.Partecipante;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Alert;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 public class HomePage {
     @FXML
@@ -17,70 +24,64 @@ public class HomePage {
     @FXML
     private VBox groupVBox;
     @FXML
+    private ScrollPane searchResultsScrollPane;
+    @FXML
+    private VBox searchResultsVBox;
+    @FXML
     private ScrollPane postScrollPane;
     @FXML
     private VBox postVBox;
     @FXML
     private TextField searchTextField;
+    @FXML
+    private TextArea newPostTextArea;
+    @FXML
+    private Button createPostButton;
+    @FXML
+    private Button iscrivitiButton;
 
     private String userEmail;
+    private String currentGroupName;
+    private boolean isUserParticipant;
+
+    private GruppoDAO gruppoDAO = new GruppoDAO();
+    private PartecipanteDAO partecipanteDAO = new PartecipanteDAO();
+    private ContenutoDAO contenutoDAO = new ContenutoDAO();
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-        loadUserGroups();
+        MostraGruppi();
     }
 
-    private void loadUserGroups() {
-        String query = "SELECT g.titolo " +
-                "FROM gruppo g " +
-                "JOIN partecipante p ON g.titolo = p.titolo_gruppo " +
-                "JOIN utente u ON p.email_partecipante = u.email " +
-                "WHERE u.email = ?";
-
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, userEmail);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                String groupName = rs.getString("titolo");
-                addGroupToView(groupName);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert("Errore", "Impossibile caricare i gruppi: " + e.getMessage());
+    private void MostraGruppi() {
+        List<Gruppo> gruppi = gruppoDAO.getGruppiByUserEmail(userEmail);
+        groupVBox.getChildren().clear();
+        for (Gruppo gruppo : gruppi) {
+            MostraGruppi(gruppo.getTitolo());
         }
     }
 
-    private void addGroupToView(String groupName) {
+    private void MostraGruppi(String groupName) {
         javafx.scene.control.Button groupButton = new javafx.scene.control.Button(groupName);
-        groupButton.setOnAction(event -> loadGroupPosts(groupName));
+        groupButton.setOnAction(event -> {
+            currentGroupName = groupName;
+            isUserParticipant = true;
+            MostraPost(groupName);
+            iscrivitiButton.setVisible(false);
+        });
         groupVBox.getChildren().add(groupButton);
     }
 
-    private void loadGroupPosts(String groupName) {
-        String query = "SELECT c.testo " +
-                "FROM contenuto c " +
-                "JOIN gruppo g ON c.gruppo_app = g.titolo " +
-                "WHERE g.titolo = ?";
+    private void MostraPost(String groupName) {
+        if (!isUserParticipant) {
+            MostraAlert("Errore", "Devi iscriverti al gruppo per visualizzare i contenuti.");
+            return;
+        }
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, groupName);
-            ResultSet rs = stmt.executeQuery();
-
-            postVBox.getChildren().clear();
-            while (rs.next()) {
-                String postText = rs.getString("testo");
-                addPostToView(postText);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert("Errore", "Impossibile caricare i post: " + e.getMessage());
+        List<Contenuto> contenuti = contenutoDAO.getContenutiByGruppo(groupName);
+        postVBox.getChildren().clear();
+        for (Contenuto contenuto : contenuti) {
+            addPostToView(contenuto.getTesto());
         }
     }
 
@@ -89,8 +90,63 @@ public class HomePage {
         postVBox.getChildren().add(postLabel);
     }
 
-    private void showAlert(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+    @FXML
+    private void CreaPost() {
+        String postText = newPostTextArea.getText().trim();
+        if (postText.isEmpty() || currentGroupName == null) {
+            MostraAlert("Errore", "Il testo del post non può essere vuoto e devi selezionare un gruppo.");
+            return;
+        }
+
+        Contenuto nuovoContenuto = new Contenuto(postText, java.sql.Date.valueOf(LocalDate.now()), currentGroupName, userEmail);
+        contenutoDAO.insertContenuto(nuovoContenuto);
+        newPostTextArea.clear();
+        MostraPost(currentGroupName);
+    }
+
+    @FXML
+    private void Cercagruppo(ActionEvent actionEvent) {
+        String searchText = searchTextField.getText().trim();
+        if (searchText.isEmpty()) {
+            MostraAlert("Errore", "Il campo di ricerca non può essere vuoto.");
+            return;
+        }
+
+        List<Gruppo> gruppi = gruppoDAO.searchGruppi(searchText);
+        searchResultsVBox.getChildren().clear();
+        for (Gruppo gruppo : gruppi) {
+            MostraGruppo(gruppo.getTitolo());
+        }
+    }
+
+    private void MostraGruppo(String groupName) {
+        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(groupName);
+        groupButton.setOnAction(event -> {
+            currentGroupName = groupName;
+            isUserParticipant = false;
+            iscrivitiButton.setVisible(true);
+            postVBox.getChildren().clear();
+        });
+        searchResultsVBox.getChildren().add(groupButton);
+    }
+
+    @FXML
+    private void iscrivitiAlGruppo() {
+        if (currentGroupName == null) {
+            MostraAlert("Errore", "Devi selezionare un gruppo.");
+            return;
+        }
+
+        Partecipante nuovoPartecipante = new Partecipante(userEmail, currentGroupName, java.sql.Date.valueOf(LocalDate.now()));
+        partecipanteDAO.insertPartecipante(nuovoPartecipante);
+        iscrivitiButton.setVisible(false);
+        MostraGruppi();
+        isUserParticipant = true;
+        MostraPost(currentGroupName);
+    }
+
+    private void MostraAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

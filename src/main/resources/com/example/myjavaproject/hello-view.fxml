@@ -5,19 +5,43 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myjavaproject.HelloController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myjavaproject.HelloController">
    <children>
+      <Text layoutX="61.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scopri e unisciti ai gruppi basati sui tuoi interessi" wrappingWidth="270.1367492675781" />
       <Text layoutX="61.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connettiti con gli studenti" wrappingWidth="233.33670043945312">
          <font>
             <Font name="System Bold" size="33.0" />
          </font>
       </Text>
-      <HBox layoutY="500.0" prefHeight="100.0" prefWidth="900.0" style="-fx-background-color: #5856d6;">
+      <TextField fx:id="FieldEmail" layoutX="545.0" layoutY="194.0" prefHeight="25.0" prefWidth="210.0" promptText="email" style="-fx-background-radius: 20;" />
+      <PasswordField fx:id="FieldPassword" layoutX="545.0" layoutY="248.0" prefHeight="25.0" prefWidth="210.0" promptText="password" style="-fx-background-radius: 20;" />
+      <Button fx:id="AccediButton" layoutX="575.0" layoutY="319.0" mnemonicParsing="false" onAction="#VaiAllaHomepage" onMouseEntered="#IngrandisciAccedi" onMouseExited="#RiduciAccedi" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #012652; -fx-background-radius: 5;" text="Accedi" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Button fx:id="IscrivitiBluButton" layoutX="103.0" layoutY="321.0" mnemonicParsing="false" onAction="#SwitchSchermataRegistrazione" onMouseEntered="#IngrandisciIscriviti" onMouseExited="#RiduciIscriviti" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #012652; -fx-background-radius: 5;" text="Iscriviti adesso" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Text fill="#012652" layoutX="61.0" layoutY="100.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Unina Social Group" wrappingWidth="493.336669921875">
+         <font>
+            <Font name="System Bold Italic" size="51.0" />
+         </font>
+      </Text>
+      <Button fx:id="IscrivitiBiancoButton" layoutX="783.0" layoutY="24.0" mnemonicParsing="false" onAction="#SwitchSchermataRegistrazione" style="-fx-background-color: trasparent; -fx-border-color: black; -fx-border-radius: 5;" text="Iscriviti adesso" />
+      <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="575.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../immagini/LogoUninaSocialGroup.jpg" />
+         </image>
+      </ImageView>
+      <HBox layoutY="500.0" prefHeight="100.0" prefWidth="900.0" style="-fx-background-color: #012652;">
          <children>
             <Label alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Entra in contatto con studenti che la pensano allo stesso modo ed esplora interessi condivisi" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -29,16 +53,5 @@
             </Label>
          </children>
       </HBox>
-      <Text layoutX="61.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scopri e unisciti ai gruppi basati sui tuoi interessi" wrappingWidth="270.1367492675781" />
-      <TextField fx:id="FieldEmail" layoutX="545.0" layoutY="202.0" prefHeight="25.0" prefWidth="210.0" promptText="email" style="-fx-background-radius: 20;" />
-      <PasswordField fx:id="FieldPassword" layoutX="545.0" layoutY="257.0" prefHeight="25.0" prefWidth="210.0" promptText="password" style="-fx-background-radius: 20;" />
-      <Button fx:id="AccediButton" layoutX="611.0" layoutY="314.0" mnemonicParsing="false" onAction="#VaiAllaHomepage" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #0e60d9; -fx-background-radius: 5;" text="Accedi" textFill="WHITE" />
-      <Button fx:id="IscrivitiBluButton" layoutX="61.0" layoutY="314.0" mnemonicParsing="false" onAction="#SwitchSchermataRegistrazione" style="-fx-background-color: #0e60d9; -fx-background-radius: 5;" text="Iscriviti adesso" textFill="WHITE" />
-      <Text fill="#5856d6" layoutX="81.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unina Social Group" wrappingWidth="493.336669921875">
-         <font>
-            <Font name="System Bold Italic" size="51.0" />
-         </font>
-      </Text>
-      <Button fx:id="IscrivitiBiancoButton" layoutX="768.0" layoutY="34.0" mnemonicParsing="false" onAction="#SwitchSchermataRegistrazione" style="-fx-background-color: trasparent; -fx-border-color: black; -fx-border-radius: 5;" text="Iscriviti adesso" />
    </children>
 </Pane>

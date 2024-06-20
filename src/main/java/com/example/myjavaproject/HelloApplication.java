@@ -2,7 +2,6 @@ package com.example.myjavaproject;
 
 import java.util.Scanner;
 
-import Util.DBUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,8 +11,7 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
 
-    static Scanner scan = new Scanner(System.in);
-    //connect
+
     @Override
     public void start(Stage stage) throws IOException {
 
