@@ -71,7 +71,7 @@ public class UtenteDAO {
             stmt.setString(3, utente.getEmail());
             stmt.setString(4, utente.getPassword());
             stmt.setString(5, utente.getUsername());
-            stmt.setString(6, utente.getBio());
+            stmt.setString(6, utente.getBio()); // Bio può essere null
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -3,6 +3,7 @@ package com.example.myjavaproject;
 import DAO.UtenteDAO;
 import Oggetti.Utente;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -12,19 +13,27 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 
 public class RegistrazioneSchermata {
-    public TextField FieldNome;
-    public TextField FieldCognome;
-    public TextField FieldEmail;
-    public PasswordField FieldPassword;
-    public Button ProseguiButton;
-    public Button LoginButton;
-    public TextField FieldUsername;
-    public TextField FieldBio;
-    public Text RegistrazioneAvvenuta;
+    public Button ProseguiButton1;
+    public Button LoginButton1;
+    @FXML
+    private TextField FieldNome;
+    @FXML
+    private TextField FieldCognome;
+    @FXML
+    private TextField FieldEmail;
+    @FXML
+    private PasswordField FieldPassword;
+    @FXML
+    private TextField FieldUsername;
+    @FXML
+    private TextField FieldBio;
+    @FXML
+    private Text RegistrazioneAvvenuta;
 
     private UtenteDAO utenteDAO = new UtenteDAO();
 
@@ -34,7 +43,7 @@ public class RegistrazioneSchermata {
         String email = FieldEmail.getText();
         String password = FieldPassword.getText();
         String username = FieldUsername.getText();
-        String bio = FieldBio.getText();
+        String bio = FieldBio.getText(); // Bio può essere null
 
         if (nome == null || nome.trim().isEmpty() ||
                 cognome == null || cognome.trim().isEmpty() ||
@@ -53,6 +62,11 @@ public class RegistrazioneSchermata {
         if (utenteDAO.usernameExists(username)) {
             MostraAlert("Errore", "Esiste già un username uguale.");
             return;
+        }
+
+        // In caso di campo bio vuoto, impostalo a null
+        if (bio == null || bio.trim().isEmpty()) {
+            bio = null;
         }
 
         Utente nuovoUtente = new Utente(nome, cognome, email, password, username, bio);
@@ -76,5 +90,17 @@ public class RegistrazioneSchermata {
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);
+    }
+
+
+
+    public void IngrandisciApriUnAccount(javafx.scene.input.MouseEvent mouseEvent) {
+        ProseguiButton1.setScaleX(1.1);
+        ProseguiButton1.setScaleY(1.1);
+    }
+
+    public void RiduciApriUnAccount(javafx.scene.input.MouseEvent mouseEvent) {
+        ProseguiButton1.setScaleX(1);
+        ProseguiButton1.setScaleY(1);
     }
 }
