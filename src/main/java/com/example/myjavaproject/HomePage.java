@@ -20,29 +20,29 @@ import java.util.List;
 
 public class HomePage {
     @FXML
-    private ScrollPane groupScrollPane;
+    private ScrollPane gruppiScrollPane;
     @FXML
     private VBox groupVBox;
     @FXML
-    private ScrollPane searchResultsScrollPane;
+    private ScrollPane GruppiTrovatiScrollPane;
     @FXML
-    private VBox searchResultsVBox;
+    private VBox CercaGruppi;
     @FXML
     private ScrollPane postScrollPane;
     @FXML
-    private VBox postVBox;
+    private VBox AreaCont;
     @FXML
-    private TextField searchTextField;
+    private TextField FieldCercaTesto;
     @FXML
-    private TextArea newPostTextArea;
+    private TextArea AreaNuovoPost;
     @FXML
-    private Button createPostButton;
+    private Button CreaContButton;
     @FXML
     private Button iscrivitiButton;
 
     private String userEmail;
-    private String currentGroupName;
-    private boolean isUserParticipant;
+    private String CurrNomiGruppi;
+    private boolean Partecipante;
 
     private GruppoDAO gruppoDAO = new GruppoDAO();
     private PartecipanteDAO partecipanteDAO = new PartecipanteDAO();
@@ -61,59 +61,59 @@ public class HomePage {
         }
     }
 
-    private void MostraGruppi(String groupName) {
-        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(groupName);
+    private void MostraGruppi(String NomiGruppi) {
+        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
         groupButton.setOnAction(event -> {
-            currentGroupName = groupName;
-            isUserParticipant = true;
-            MostraPost(groupName);
+            CurrNomiGruppi = NomiGruppi;
+            Partecipante = true;
+            MostraPost(NomiGruppi);
             iscrivitiButton.setVisible(false);
         });
         groupVBox.getChildren().add(groupButton);
     }
 
-    private void MostraPost(String groupName) {
-        if (!isUserParticipant) {
+    private void MostraPost(String NomiGruppi) {
+        if (!Partecipante) {
             MostraAlert("Errore", "Devi iscriverti al gruppo per visualizzare i contenuti.");
             return;
         }
 
-        List<Contenuto> contenuti = contenutoDAO.getContenutiByGruppo(groupName);
-        postVBox.getChildren().clear();
+        List<Contenuto> contenuti = contenutoDAO.getContenutiByGruppo(NomiGruppi);
+        AreaCont.getChildren().clear();
         for (Contenuto contenuto : contenuti) {
-            addPostToView(contenuto.getTesto());
+            CaricaNuovoContenuto(contenuto.getTesto());
         }
     }
 
-    private void addPostToView(String postText) {
+    private void CaricaNuovoContenuto(String postText) {
         javafx.scene.control.Label postLabel = new javafx.scene.control.Label(postText);
-        postVBox.getChildren().add(postLabel);
+        AreaCont.getChildren().add(postLabel);
     }
 
     @FXML
     private void CreaPost() {
-        String postText = newPostTextArea.getText().trim();
-        if (postText.isEmpty() || currentGroupName == null) {
+        String TestoPost = AreaNuovoPost.getText().trim();
+        if (TestoPost.isEmpty() || CurrNomiGruppi == null) {
             MostraAlert("Errore", "Il testo del post non può essere vuoto e devi selezionare un gruppo.");
             return;
         }
 
-        Contenuto nuovoContenuto = new Contenuto(postText, java.sql.Date.valueOf(LocalDate.now()), currentGroupName, userEmail);
+        Contenuto nuovoContenuto = new Contenuto(TestoPost, java.sql.Date.valueOf(LocalDate.now()), CurrNomiGruppi, userEmail);
         contenutoDAO.insertContenuto(nuovoContenuto);
-        newPostTextArea.clear();
-        MostraPost(currentGroupName);
+        AreaNuovoPost.clear();
+        MostraPost(CurrNomiGruppi);
     }
 
     @FXML
     private void Cercagruppo(ActionEvent actionEvent) {
-        String searchText = searchTextField.getText().trim();
+        String searchText = FieldCercaTesto.getText().trim();
         if (searchText.isEmpty()) {
             MostraAlert("Errore", "Il campo di ricerca non può essere vuoto.");
             return;
         }
 
         List<Gruppo> gruppi = gruppoDAO.searchGruppi(searchText);
-        searchResultsVBox.getChildren().clear();
+        CercaGruppi.getChildren().clear();
         for (Gruppo gruppo : gruppi) {
             MostraGruppo(gruppo.getTitolo());
         }
@@ -122,27 +122,27 @@ public class HomePage {
     private void MostraGruppo(String groupName) {
         javafx.scene.control.Button groupButton = new javafx.scene.control.Button(groupName);
         groupButton.setOnAction(event -> {
-            currentGroupName = groupName;
-            isUserParticipant = false;
+            CurrNomiGruppi = groupName;
+            Partecipante = false;
             iscrivitiButton.setVisible(true);
-            postVBox.getChildren().clear();
+            AreaCont.getChildren().clear();
         });
-        searchResultsVBox.getChildren().add(groupButton);
+        CercaGruppi.getChildren().add(groupButton);
     }
 
     @FXML
     private void iscrivitiAlGruppo() {
-        if (currentGroupName == null) {
+        if (CurrNomiGruppi == null) {
             MostraAlert("Errore", "Devi selezionare un gruppo.");
             return;
         }
 
-        Partecipante nuovoPartecipante = new Partecipante(userEmail, currentGroupName, java.sql.Date.valueOf(LocalDate.now()));
+        Partecipante nuovoPartecipante = new Partecipante(userEmail, CurrNomiGruppi, java.sql.Date.valueOf(LocalDate.now()));
         partecipanteDAO.insertPartecipante(nuovoPartecipante);
         iscrivitiButton.setVisible(false);
         MostraGruppi();
-        isUserParticipant = true;
-        MostraPost(currentGroupName);
+        Partecipante = true;
+        MostraPost(CurrNomiGruppi);
     }
 
     private void MostraAlert(String title, String message) {
