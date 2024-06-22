@@ -49,7 +49,7 @@ public class HelloController {
             return;
         }
 
-        Utente utente = utenteDAO.getUtenteByEmailAndPassword(email, password);
+        Utente utente = utenteDAO.GetEmailePassword(email, password);
         if (utente != null) {
             try {
                 caricaDashboard(actionEvent, email);

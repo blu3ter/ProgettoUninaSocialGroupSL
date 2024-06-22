@@ -78,7 +78,7 @@ public class HomePage {
             return;
         }
 
-        List<Contenuto> contenuti = contenutoDAO.getContenutiByGruppo(NomiGruppi);
+        List<Contenuto> contenuti = contenutoDAO.getContenutiGruppo(NomiGruppi);
         AreaCont.getChildren().clear();
         for (Contenuto contenuto : contenuti) {
             CaricaNuovoContenuto(contenuto.getTesto());
@@ -112,7 +112,7 @@ public class HomePage {
             return;
         }
 
-        List<Gruppo> gruppi = gruppoDAO.searchGruppi(searchText);
+        List<Gruppo> gruppi = gruppoDAO.CercaGruppi(searchText);
         CercaGruppi.getChildren().clear();
         for (Gruppo gruppo : gruppi) {
             MostraGruppo(gruppo.getTitolo());

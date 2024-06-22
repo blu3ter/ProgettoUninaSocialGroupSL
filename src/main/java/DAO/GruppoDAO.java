@@ -29,7 +29,7 @@ public class GruppoDAO {
         return gruppi;
     }
 
-    public List<Gruppo> searchGruppi(String searchText) {
+    public List<Gruppo> CercaGruppi(String searchText) {
         String query = "SELECT titolo, categoria FROM gruppo WHERE titolo ILIKE ? OR categoria ILIKE ?";
         List<Gruppo> gruppi = new ArrayList<>();
         try (Connection conn = DBUtil.getConnection();

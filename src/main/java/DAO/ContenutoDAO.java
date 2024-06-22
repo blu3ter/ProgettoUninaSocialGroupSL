@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContenutoDAO {
-    public List<Contenuto> getContenutiByGruppo(String gruppoApp) {
+    public List<Contenuto> getContenutiGruppo(String gruppoApp) {
         String query = "SELECT testo, data, gruppo_app, email_utente FROM contenuto WHERE gruppo_app = ?";
         List<Contenuto> contenuti = new ArrayList<>();
         try (Connection conn = DBUtil.getConnection();

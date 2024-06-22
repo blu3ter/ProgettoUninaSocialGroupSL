@@ -13,7 +13,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 
@@ -54,12 +53,12 @@ public class RegistrazioneSchermata {
             return;
         }
 
-        if (utenteDAO.emailExists(email)) {
+        if (utenteDAO.EmailEsistente(email)) {
             MostraAlert("Errore", "Esiste già un'email uguale.");
             return;
         }
 
-        if (utenteDAO.usernameExists(username)) {
+        if (utenteDAO.UsernameEsistente(username)) {
             MostraAlert("Errore", "Esiste già un username uguale.");
             return;
         }
