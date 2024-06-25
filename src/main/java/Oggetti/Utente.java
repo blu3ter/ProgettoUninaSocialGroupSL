@@ -58,9 +58,6 @@ public class Utente {
         this.bio = bio;
     }
 
-    public Utente() {
-
-    }
     public Utente(String nome, String cognome, String email, String password, String username, String bio) {
         this.nome = nome;
         this.cognome = cognome;

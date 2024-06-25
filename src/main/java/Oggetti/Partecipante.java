@@ -31,10 +31,6 @@ public class Partecipante {
         this.dataIscrizione = dataIscrizione;
     }
 
-    public Partecipante(){
-
-    }
-
     public Partecipante(String emailPartecipante, String titoloGruppo, Date dataIscrizione){
         this.emailPartecipante=emailPartecipante;
         this.titoloGruppo=titoloGruppo;

@@ -6,29 +6,22 @@ import DAO.PartecipanteDAO;
 import Oggetti.Contenuto;
 import Oggetti.Gruppo;
 import Oggetti.Partecipante;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Alert;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class HomePage {
-    @FXML
-    private ScrollPane gruppiScrollPane;
+    public ScrollPane gruppiScrollPane;
+    public ScrollPane GruppiTrovatiScrollPane;
+    public Button CreaContButton;
+    public ScrollPane postScrollPane;
     @FXML
     private VBox groupVBox;
     @FXML
-    private ScrollPane GruppiTrovatiScrollPane;
-    @FXML
     private VBox CercaGruppi;
-    @FXML
-    private ScrollPane postScrollPane;
     @FXML
     private VBox AreaCont;
     @FXML
@@ -36,17 +29,15 @@ public class HomePage {
     @FXML
     private TextArea AreaNuovoPost;
     @FXML
-    private Button CreaContButton;
-    @FXML
     private Button iscrivitiButton;
 
     private String userEmail;
     private String CurrNomiGruppi;
     private boolean Partecipante;
 
-    private GruppoDAO gruppoDAO = new GruppoDAO();
-    private PartecipanteDAO partecipanteDAO = new PartecipanteDAO();
-    private ContenutoDAO contenutoDAO = new ContenutoDAO();
+    private final GruppoDAO gruppoDAO = new GruppoDAO();
+    private final PartecipanteDAO partecipanteDAO = new PartecipanteDAO();
+    private final ContenutoDAO contenutoDAO = new ContenutoDAO();
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
@@ -74,7 +65,7 @@ public class HomePage {
 
     private void MostraPost(String NomiGruppi) {
         if (!Partecipante) {
-            MostraAlert("Errore", "Devi iscriverti al gruppo per visualizzare i contenuti.");
+            MostraAlert("Devi iscriverti al gruppo per visualizzare i contenuti.");
             return;
         }
 
@@ -94,7 +85,7 @@ public class HomePage {
     private void CreaPost() {
         String TestoPost = AreaNuovoPost.getText().trim();
         if (TestoPost.isEmpty() || CurrNomiGruppi == null) {
-            MostraAlert("Errore", "Il testo del post non può essere vuoto e devi selezionare un gruppo.");
+            MostraAlert("Il testo del post non può essere vuoto e devi selezionare un gruppo.");
             return;
         }
 
@@ -105,24 +96,24 @@ public class HomePage {
     }
 
     @FXML
-    private void Cercagruppo(ActionEvent actionEvent) {
-        String searchText = FieldCercaTesto.getText().trim();
-        if (searchText.isEmpty()) {
-            MostraAlert("Errore", "Il campo di ricerca non può essere vuoto.");
+    private void Cercagruppo() {
+        String CercaTesto = FieldCercaTesto.getText().trim();
+        if (CercaTesto.isEmpty()) {
+            MostraAlert("Il campo di ricerca non può essere vuoto.");
             return;
         }
 
-        List<Gruppo> gruppi = gruppoDAO.CercaGruppi(searchText);
+        List<Gruppo> gruppi = gruppoDAO.CercaGruppi(CercaTesto);
         CercaGruppi.getChildren().clear();
         for (Gruppo gruppo : gruppi) {
             MostraGruppo(gruppo.getTitolo());
         }
     }
 
-    private void MostraGruppo(String groupName) {
-        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(groupName);
+    private void MostraGruppo(String NomiGruppi) {
+        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
         groupButton.setOnAction(event -> {
-            CurrNomiGruppi = groupName;
+            CurrNomiGruppi = NomiGruppi;
             Partecipante = false;
             iscrivitiButton.setVisible(true);
             AreaCont.getChildren().clear();
@@ -133,7 +124,7 @@ public class HomePage {
     @FXML
     private void iscrivitiAlGruppo() {
         if (CurrNomiGruppi == null) {
-            MostraAlert("Errore", "Devi selezionare un gruppo.");
+            MostraAlert("Devi selezionare un gruppo.");
             return;
         }
 
@@ -145,9 +136,9 @@ public class HomePage {
         MostraPost(CurrNomiGruppi);
     }
 
-    private void MostraAlert(String title, String message) {
+    private void MostraAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
+        alert.setTitle("Errore");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

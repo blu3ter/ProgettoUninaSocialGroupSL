@@ -11,7 +11,7 @@ public class DBUtil {
     private static final String PASSWORD = "1234";
 
     public static Connection getConnection() throws SQLException {
-        Connection connection = null;
+        Connection connection;
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);

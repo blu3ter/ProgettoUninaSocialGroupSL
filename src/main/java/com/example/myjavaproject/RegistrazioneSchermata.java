@@ -32,11 +32,11 @@ public class RegistrazioneSchermata {
     @FXML
     private TextField FieldBio;
     @FXML
-    private Text RegistrazioneAvvenuta;
+    public Text RegistrazioneAvvenuta;
 
-    private UtenteDAO utenteDAO = new UtenteDAO();
+    private final UtenteDAO utenteDAO = new UtenteDAO();
 
-    public void ContinuaPrimoAccesso(ActionEvent actionEvent) {
+    public void ContinuaPrimoAccesso() {
         String nome = FieldNome.getText();
         String cognome = FieldCognome.getText();
         String email = FieldEmail.getText();
@@ -49,17 +49,17 @@ public class RegistrazioneSchermata {
                 email == null || email.trim().isEmpty() ||
                 password == null || password.trim().isEmpty() ||
                 username == null || username.trim().isEmpty()) {
-            MostraAlert("Errore", "Tutti i campi obbligatori devono essere riempiti.");
+            MostraAlert("Tutti i campi obbligatori devono essere riempiti.");
             return;
         }
 
         if (utenteDAO.EmailEsistente(email)) {
-            MostraAlert("Errore", "Esiste già un'email uguale.");
+            MostraAlert("Esiste già un'email uguale.");
             return;
         }
 
         if (utenteDAO.UsernameEsistente(username)) {
-            MostraAlert("Errore", "Esiste già un username uguale.");
+            MostraAlert("Esiste già un username uguale.");
             return;
         }
 
@@ -73,9 +73,9 @@ public class RegistrazioneSchermata {
         RegistrazioneAvvenuta.setVisible(true);
     }
 
-    private void MostraAlert(String title, String message) {
+    private void MostraAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
+        alert.setTitle("Errore");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
@@ -93,12 +93,12 @@ public class RegistrazioneSchermata {
 
 
 
-    public void IngrandisciApriUnAccount(javafx.scene.input.MouseEvent mouseEvent) {
+    public void IngrandisciApriUnAccount() {
         ProseguiButton1.setScaleX(1.1);
         ProseguiButton1.setScaleY(1.1);
     }
 
-    public void RiduciApriUnAccount(javafx.scene.input.MouseEvent mouseEvent) {
+    public void RiduciApriUnAccount() {
         ProseguiButton1.setScaleX(1);
         ProseguiButton1.setScaleY(1);
     }

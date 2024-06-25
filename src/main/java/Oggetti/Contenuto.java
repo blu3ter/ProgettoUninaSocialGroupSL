@@ -48,7 +48,4 @@ public class Contenuto {
         this.emailUtente=emailUtente;
     }
 
-    public Contenuto(){
-
-    }
 }

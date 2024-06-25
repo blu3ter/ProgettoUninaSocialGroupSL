@@ -11,24 +11,24 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HelloController {
+    public Button IscrivitiBiancoButton;
+    public ImageView logo;
     @FXML
     private Button AccediButton;
     @FXML
     private Button IscrivitiBluButton;
     @FXML
-    private Button IscrivitiBiancoButton;
-    @FXML
     private TextField FieldEmail;
     @FXML
     private PasswordField FieldPassword;
 
-    private UtenteDAO utenteDAO = new UtenteDAO();
+    private final UtenteDAO utenteDAO = new UtenteDAO();
 
     public void SwitchSchermataRegistrazione(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("RegistrazioneSchermata.fxml"));
@@ -45,24 +45,24 @@ public class HelloController {
         String password = FieldPassword.getText();
 
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            MostraAlert("Errore", "Email e password sono obbligatorie.");
+            MostraAlert("Email e password sono obbligatorie.");
             return;
         }
 
         Utente utente = utenteDAO.GetEmailePassword(email, password);
         if (utente != null) {
             try {
-                caricaDashboard(actionEvent, email);
+                CaricaHomePage(actionEvent, email);
             } catch (IOException e) {
                 e.printStackTrace();
-                MostraAlert("Errore", "Impossibile caricare la dashboard: " + e.getMessage());
+                MostraAlert("Impossibile caricare la dashboard: " + e.getMessage());
             }
         } else {
-            MostraAlert("Errore", "Email o password errati.");
+            MostraAlert("Email o password errati.");
         }
     }
 
-    private void caricaDashboard(ActionEvent actionEvent, String email) throws IOException {
+    private void CaricaHomePage(ActionEvent actionEvent, String email) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(loader.load());
@@ -74,30 +74,30 @@ public class HelloController {
         stage.setResizable(false);
     }
 
-    private void MostraAlert(String title, String message) {
+    private void MostraAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
+        alert.setTitle("Errore");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    public void RiduciAccedi(MouseEvent mouseEvent) {
+    public void RiduciAccedi() {
         AccediButton.setScaleX(1.0);
         AccediButton.setScaleY(1.0);
     }
 
-    public void IngrandisciAccedi(MouseEvent mouseEvent) {
+    public void IngrandisciAccedi() {
         AccediButton.setScaleX(1.1);
         AccediButton.setScaleY(1.1);
     }
 
-    public void IngrandisciIscriviti(MouseEvent mouseEvent) {
+    public void IngrandisciIscriviti() {
         IscrivitiBluButton.setScaleX(1.1);
         IscrivitiBluButton.setScaleY(1.1);
     }
 
-    public void RiduciIscriviti(MouseEvent mouseEvent) {
+    public void RiduciIscriviti() {
         IscrivitiBluButton.setScaleX(1);
         IscrivitiBluButton.setScaleY(1);
     }

@@ -23,10 +23,6 @@ public class Gruppo {
 
     public Gruppo() {
     }
-    public Gruppo(String titolo, String categoria) {
-        this.titolo = titolo;
-        this.categoria = categoria;
-    }
 
 }
 
