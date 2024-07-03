@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloController {
+public class LoginController {
     public Button IscrivitiBiancoButton;
     public ImageView logo;
     @FXML
@@ -66,7 +66,7 @@ public class HelloController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(loader.load());
-        HomePage controller = loader.getController();
+        HomePageController controller = loader.getController();
         controller.setUserEmail(email);
         stage.setTitle("Home Page");
         stage.setScene(scene);

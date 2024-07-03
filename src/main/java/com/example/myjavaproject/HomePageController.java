@@ -7,17 +7,23 @@ import Oggetti.Contenuto;
 import Oggetti.Gruppo;
 import Oggetti.Partecipante;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-public class HomePage {
+public class HomePageController {
     public ScrollPane gruppiScrollPane;
     public ScrollPane GruppiTrovatiScrollPane;
     public Button CreaContButton;
     public ScrollPane postScrollPane;
+    public Button StatisticheButton;
     @FXML
     private VBox groupVBox;
     @FXML
@@ -32,7 +38,7 @@ public class HomePage {
     private Button iscrivitiButton;
 
     private String userEmail;
-    private String CurrNomiGruppi;
+    private String titoloGruppo;
     private boolean Partecipante;
 
     private final GruppoDAO gruppoDAO = new GruppoDAO();
@@ -48,14 +54,14 @@ public class HomePage {
         List<Gruppo> gruppi = gruppoDAO.getGruppiByUserEmail(userEmail);
         groupVBox.getChildren().clear();
         for (Gruppo gruppo : gruppi) {
-            MostraGruppi(gruppo.getTitolo());
+            PartecipanteGruppo(gruppo.getTitolo());
         }
     }
 
-    private void MostraGruppi(String NomiGruppi) {
+    private void PartecipanteGruppo(String NomiGruppi) {
         javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
         groupButton.setOnAction(event -> {
-            CurrNomiGruppi = NomiGruppi;
+            titoloGruppo = NomiGruppi;
             Partecipante = true;
             MostraPost(NomiGruppi);
             iscrivitiButton.setVisible(false);
@@ -84,15 +90,15 @@ public class HomePage {
     @FXML
     private void CreaPost() {
         String TestoPost = AreaNuovoPost.getText().trim();
-        if (TestoPost.isEmpty() || CurrNomiGruppi == null) {
+        if (TestoPost.isEmpty() || titoloGruppo == null) {
             MostraAlert("Il testo del post non può essere vuoto e devi selezionare un gruppo.");
             return;
         }
 
-        Contenuto nuovoContenuto = new Contenuto(TestoPost, java.sql.Date.valueOf(LocalDate.now()), CurrNomiGruppi, userEmail);
+        Contenuto nuovoContenuto = new Contenuto(TestoPost, java.sql.Date.valueOf(LocalDate.now()), titoloGruppo, userEmail);
         contenutoDAO.insertContenuto(nuovoContenuto);
         AreaNuovoPost.clear();
-        MostraPost(CurrNomiGruppi);
+        MostraPost(titoloGruppo);
     }
 
     @FXML
@@ -113,27 +119,12 @@ public class HomePage {
     private void MostraGruppo(String NomiGruppi) {
         javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
         groupButton.setOnAction(event -> {
-            CurrNomiGruppi = NomiGruppi;
+            titoloGruppo = NomiGruppi;
             Partecipante = false;
             iscrivitiButton.setVisible(true);
             AreaCont.getChildren().clear();
         });
         CercaGruppi.getChildren().add(groupButton);
-    }
-
-    @FXML
-    private void iscrivitiAlGruppo() {
-        if (CurrNomiGruppi == null) {
-            MostraAlert("Devi selezionare un gruppo.");
-            return;
-        }
-
-        Partecipante nuovoPartecipante = new Partecipante(userEmail, CurrNomiGruppi, java.sql.Date.valueOf(LocalDate.now()));
-        partecipanteDAO.insertPartecipante(nuovoPartecipante);
-        iscrivitiButton.setVisible(false);
-        MostraGruppi();
-        Partecipante = true;
-        MostraPost(CurrNomiGruppi);
     }
 
     private void MostraAlert(String message) {
@@ -143,4 +134,45 @@ public class HomePage {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    private void iscrivitiAlGruppo() {
+        if (titoloGruppo == null) {
+            MostraAlert("Devi selezionare un gruppo.");
+            return;
+        }
+
+        // Check if the user is already subscribed to the group
+        if (partecipanteDAO.GiaPartecipante(userEmail, titoloGruppo)) {
+            MostraAlert("Sei già iscritto a questo gruppo!");
+            return;
+        }
+
+        Partecipante nuovoPartecipante = new Partecipante(userEmail, titoloGruppo, Date.valueOf(LocalDate.now()));
+        partecipanteDAO.insertPartecipante(nuovoPartecipante);
+        iscrivitiButton.setVisible(false);
+        MostraGruppi();
+        Partecipante = true;
+        MostraPost(titoloGruppo);
+    }
+
+    @FXML
+    private void MostraStatistiche() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Statistiche.fxml"));
+            Parent root = loader.load();
+
+            StatisticheController controller = loader.getController();
+            controller.setUserEmail(userEmail);
+
+            Stage stage = new Stage();
+            stage.setTitle("Statistiche Mensili");
+            stage.setScene(new Scene(root));
+            stage.show();
+            stage.setResizable(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

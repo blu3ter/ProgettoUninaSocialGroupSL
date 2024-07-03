@@ -6,62 +6,143 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.myjavaproject.HomePage">
-   <VBox layoutX="10.0" layoutY="10.0" prefHeight="580.0" prefWidth="250.0" spacing="10.0">
-      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="230.0" style="-fx-background-color: #0e60d9;"
-              text="Il mio account" textFill="WHITE">
+<AnchorPane id="ricerca_gruppo" prefHeight="683.0" prefWidth="901.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myjavaproject.HomePageController">
+   <children>
+      <VBox layoutY="49.0" prefHeight="635.0" prefWidth="258.0" spacing="10.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #012652; -fx-background-radius: 10px;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="I tuoi Gruppi" textAlignment="CENTER" wrappingWidth="144.1646530032158">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets top="-2.0" />
+               </VBox.margin>
+            </HBox>
+            <ScrollPane fx:id="gruppiScrollPane" hbarPolicy="NEVER" prefHeight="210.0" prefWidth="258.0" vbarPolicy="ALWAYS">
+               <content>
+                  <VBox fx:id="groupVBox" prefHeight="208.0" prefWidth="244.0" spacing="10.0" style="-fx-background-color: white;">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="-11.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #012652; -fx-background-radius: 10px;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Cerca Gruppo" textAlignment="CENTER" wrappingWidth="144.1646530032158">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets top="-11.0" />
+               </VBox.margin>
+            </HBox>
+            <TextField fx:id="FieldCercaTesto" maxWidth="-Infinity" onAction="#Cercagruppo" prefHeight="28.0" prefWidth="256.0" promptText="Tramite nome o tema" style="-fx-background-color: trasparent;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="-12.0" />
+               </VBox.margin>
+            </TextField>
+            <ScrollPane fx:id="GruppiTrovatiScrollPane" hbarPolicy="NEVER" prefHeight="210.0" prefWidth="230.0" vbarPolicy="ALWAYS">
+               <content>
+                  <VBox fx:id="CercaGruppi" prefHeight="210.0" prefWidth="242.0" spacing="10.0" style="-fx-background-color: white;">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+               <VBox.margin>
+                  <Insets top="-11.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <Button fx:id="iscrivitiButton" disable="true" mnemonicParsing="false" onAction="#iscrivitiAlGruppo" prefHeight="33.0" prefWidth="139.0" style="-fx-background-color: #012652; -fx-background-radius: 10;" text="Vuoi Iscriverti?" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="60.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <VBox layoutX="261.0" layoutY="93.0" prefHeight="490.0" prefWidth="639.0">
+         <children>
+            <ScrollPane fx:id="postScrollPane" prefHeight="384.0" prefWidth="620.0" vbarPolicy="ALWAYS">
+               <content>
+                  <VBox fx:id="AreaCont" prefHeight="387.0" prefWidth="624.0" spacing="10.0" style="-fx-background-color: white;">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <TextArea fx:id="AreaNuovoPost" prefHeight="97.0" prefWidth="639.0" promptText="Scrivi un nuovo contenuto...">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextArea>
+         </children>
+      </VBox>
+      <HBox alignment="TOP_CENTER" layoutX="-8.0" prefHeight="46.0" prefWidth="910.0" style="-fx-background-color: #012652;">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="UninaSocialGroup" textAlignment="CENTER" wrappingWidth="460.9646577835083">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <Button fx:id="CreaContButton" layoutX="310.0" layoutY="603.0" mnemonicParsing="false" onAction="#CreaPost" prefHeight="40.0" prefWidth="230.0" style="-fx-background-color: #012652; -fx-background-radius: 10px;" text="Crea Post" textFill="WHITE">
          <font>
-            <Font size="14.0"/>
+            <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <ScrollPane fx:id="gruppiScrollPane" prefHeight="210.0" prefWidth="230.0"
-                  style="-fx-background-color: grey; -fx-background-radius: 5;">
-         <VBox fx:id="groupVBox" prefHeight="210.0" prefWidth="230.0" spacing="10.0"
-               style="-fx-background-color: white;">
-            <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
-         </VBox>
-      </ScrollPane>
-      <ScrollPane fx:id="GruppiTrovatiScrollPane" prefHeight="210.0" prefWidth="230.0"
-                  style="-fx-background-color: grey; -fx-background-radius: 5;">
-         <VBox fx:id="CercaGruppi" prefHeight="210.0" prefWidth="230.0" spacing="10.0"
-               style="-fx-background-color: white;">
-            <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
-         </VBox>
-      </ScrollPane>
-      <Button fx:id="iscrivitiButton" mnemonicParsing="false" onAction="#iscrivitiAlGruppo" prefHeight="40.0"
-              prefWidth="230.0" style="-fx-background-color: #0e60d9;" text="Vuoi iscriverti?" textFill="WHITE"
-              visible="false">
+      <Button id="statistiche" fx:id="StatisticheButton" layoutX="580.0" layoutY="603.0" mnemonicParsing="false" onAction="#MostraStatistiche" prefHeight="40.0" prefWidth="230.0" style="-fx-background-color: #012652; -fx-background-radius: 10;" text="Statistiche" textFill="WHITE">
          <font>
-            <Font size="14.0"/>
+            <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <TextArea fx:id="AreaNuovoPost" prefHeight="80.0" prefWidth="230.0" promptText="Scrivi un nuovo contenuto..."/>
-      <Button fx:id="CreaContButton" mnemonicParsing="false" onAction="#CreaPost" prefHeight="40.0" prefWidth="230.0"
-              style="-fx-background-color: #0e60d9;" text="Crea Post" textFill="WHITE">
-         <font>
-            <Font size="14.0"/>
-         </font>
-      </Button>
-   </VBox>
-   <VBox layoutX="270.0" layoutY="10.0" prefHeight="580.0" prefWidth="620.0">
-      <TextField fx:id="FieldCercaTesto" onAction="#Cercagruppo" prefHeight="40.0" prefWidth="600.0"
-                 promptText="Cerca un gruppo tramite nome o tema"/>
-      <ScrollPane fx:id="postScrollPane" prefHeight="500.0" prefWidth="600.0" style="-fx-background-radius: 5;">
-         <VBox fx:id="AreaCont" prefHeight="500.0" prefWidth="600.0" spacing="10.0"
-               style="-fx-background-color: white;">
-            <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
-         </VBox>
-      </ScrollPane>
-   </VBox>
+      <HBox alignment="CENTER_LEFT" layoutX="260.0" layoutY="47.0" prefHeight="46.0" prefWidth="639.0" style="-fx-background-color: #012652; -fx-background-radius: 10px;">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+   </children>
 </AnchorPane>

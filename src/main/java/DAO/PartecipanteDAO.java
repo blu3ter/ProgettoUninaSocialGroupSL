@@ -3,10 +3,7 @@ package DAO;
 import Oggetti.Partecipante;
 import Util.DBUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
 
 public class PartecipanteDAO {
     public void insertPartecipante(Partecipante partecipante) {
@@ -21,5 +18,21 @@ public class PartecipanteDAO {
             e.printStackTrace();
         }
     }
-}
 
+    public boolean GiaPartecipante(String email, String titoloGruppo) {
+        String query = "SELECT COUNT(*) FROM partecipante WHERE email_partecipante = ? AND titolo_gruppo = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setString(2, titoloGruppo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}

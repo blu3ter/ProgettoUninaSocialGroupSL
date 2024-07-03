@@ -3,7 +3,7 @@ package Oggetti;
 public class Gruppo {
     private String titolo;
     private String categoria;
-
+    private String emailAdmin;
 
     public String getTitolo() {
         return titolo;
@@ -21,8 +21,14 @@ public class Gruppo {
         this.categoria = categoria;
     }
 
-    public Gruppo() {
+    public String getEmailAdmin() {
+        return emailAdmin;
     }
 
-}
+    public void setEmailAdmin(String emailAdmin) {
+        this.emailAdmin = emailAdmin;
+    }
 
+    public Gruppo() {
+    }
+}

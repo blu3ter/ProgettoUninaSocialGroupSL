@@ -1,11 +1,15 @@
 package Oggetti;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Partecipante {
     private String emailPartecipante;
     private String titoloGruppo;
     private Date dataIscrizione;
+
+    public Partecipante(String userEmail, String titolo, LocalDate now) {
+    }
 
     public String getEmailPartecipante() {
         return emailPartecipante;

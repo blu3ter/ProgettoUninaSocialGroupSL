@@ -14,7 +14,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
       prefWidth="900.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.myjavaproject.HelloController">
+      fx:controller="com.example.myjavaproject.LoginController">
    <Text layoutX="61.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0"
          text="Scopri e unisciti ai gruppi basati sui tuoi interessi" wrappingWidth="270.1367492675781"/>
    <Text layoutX="61.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connettiti con gli studenti"

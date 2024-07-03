@@ -45,4 +45,71 @@ public class ContenutoDAO {
             e.printStackTrace();
         }
     }
+
+    public Contenuto getContenutoConPiuCommenti(String titoloGruppo, int mese, int anno) {
+        String query = "SELECT c.testo, c.data, c.gruppo_app, c.email_utente, COUNT(co.testo) AS numero_commenti " +
+                "FROM contenuto c " +
+                "LEFT JOIN commento co ON c.id_contenuto = co.id_contenuto " +
+                "WHERE c.gruppo_app = ? AND EXTRACT(MONTH FROM c.data) = ? AND EXTRACT(YEAR FROM c.data) = ? " +
+                "GROUP BY c.id_contenuto " +
+                "ORDER BY numero_commenti DESC " +
+                "LIMIT 1";
+        return getContenutoByQuery(titoloGruppo, mese, anno, query);
+    }
+
+    // Metodo per ottenere i contenuti con meno commenti in un gruppo specifico in un mese specifico
+    public Contenuto getContenutoConMenoCommenti(String titoloGruppo, int mese, int anno) {
+        String query = "SELECT c.testo, c.data, c.gruppo_app, c.email_utente, COUNT(co.testo) AS numero_commenti " +
+                "FROM contenuto c " +
+                "LEFT JOIN commento co ON c.id_contenuto = co.id_contenuto " +
+                "WHERE c.gruppo_app = ? AND EXTRACT(MONTH FROM c.data) = ? AND EXTRACT(YEAR FROM c.data) = ? " +
+                "GROUP BY c.id_contenuto " +
+                "ORDER BY numero_commenti ASC " +
+                "LIMIT 1";
+        return getContenutoByQuery(titoloGruppo, mese, anno, query);
+    }
+
+
+
+
+    private Contenuto getContenutoByQuery(String titoloGruppo, int mese, int anno, String query) {
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, titoloGruppo);
+            stmt.setInt(2, mese);
+            stmt.setInt(3, anno);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Contenuto(
+                        rs.getString("testo"),
+                        rs.getDate("data"),
+                        rs.getString("gruppo_app"),
+                        rs.getString("email_utente")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Metodo per ottenere la media dei post in un gruppo specifico in un mese specifico
+    public double getMediaPostPerGruppo(String titoloGruppo, int mese, int anno) {
+        String query = "SELECT COUNT(*) AS numero_post " +
+                "FROM contenuto " +
+                "WHERE gruppo_app = ? AND MONTH(data) = ? AND YEAR(data) = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, titoloGruppo);
+            stmt.setInt(2, mese);
+            stmt.setInt(3, anno);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("numero_post");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

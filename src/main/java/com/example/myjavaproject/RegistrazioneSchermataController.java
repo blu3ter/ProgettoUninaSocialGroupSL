@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class RegistrazioneSchermata {
+public class RegistrazioneSchermataController {
     public Button ProseguiButton1;
     public Button LoginButton1;
     @FXML
@@ -82,7 +82,7 @@ public class RegistrazioneSchermata {
     }
 
     public void RitornaLogin(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Login");

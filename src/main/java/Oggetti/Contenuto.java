@@ -8,6 +8,10 @@ public class Contenuto {
     private String gruppoApp;
     private String emailUtente;
 
+    public Contenuto(String testo) {
+
+    }
+
     // set e get
     public String getTesto() {
         return testo;
