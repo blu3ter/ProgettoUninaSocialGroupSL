@@ -3,17 +3,23 @@ package com.example.myjavaproject;
 import DAO.ContenutoDAO;
 import DAO.GruppoDAO;
 import DAO.PartecipanteDAO;
+import DAO.UtenteDAO;
 import Oggetti.Contenuto;
 import Oggetti.Gruppo;
 import Oggetti.Partecipante;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +30,8 @@ public class HomePageController {
     public Button CreaContButton;
     public ScrollPane postScrollPane;
     public Button StatisticheButton;
+    public Button RitornaLoginButton;
+    public Button LaciaGruppoButton;
     @FXML
     private VBox groupVBox;
     @FXML
@@ -36,6 +44,8 @@ public class HomePageController {
     private TextArea AreaNuovoPost;
     @FXML
     private Button iscrivitiButton;
+    @FXML
+    private Label selectedGroupLabel;
 
     private String userEmail;
     private String titoloGruppo;
@@ -44,6 +54,7 @@ public class HomePageController {
     private final GruppoDAO gruppoDAO = new GruppoDAO();
     private final PartecipanteDAO partecipanteDAO = new PartecipanteDAO();
     private final ContenutoDAO contenutoDAO = new ContenutoDAO();
+
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
@@ -63,28 +74,36 @@ public class HomePageController {
         groupButton.setOnAction(event -> {
             titoloGruppo = NomiGruppi;
             Partecipante = true;
+            iscrivitiButton.setDisable(true); // Disable the button if the user is already a participant
             MostraPost(NomiGruppi);
-            iscrivitiButton.setVisible(false);
+            selectedGroupLabel.setText("Gruppo selezionato: " + NomiGruppi);
         });
         groupVBox.getChildren().add(groupButton);
     }
 
     private void MostraPost(String NomiGruppi) {
-        if (!Partecipante) {
-            MostraAlert("Devi iscriverti al gruppo per visualizzare i contenuti.");
-            return;
-        }
-
         List<Contenuto> contenuti = contenutoDAO.getContenutiGruppo(NomiGruppi);
         AreaCont.getChildren().clear();
         for (Contenuto contenuto : contenuti) {
-            CaricaNuovoContenuto(contenuto.getTesto());
+            CaricaContenuto(contenuto);
         }
     }
 
-    private void CaricaNuovoContenuto(String postText) {
-        javafx.scene.control.Label postLabel = new javafx.scene.control.Label(postText);
-        AreaCont.getChildren().add(postLabel);
+    private void CaricaContenuto(Contenuto contenuto) {
+        String emailUtente = contenuto.getEmailUtente();
+        String username = UtenteDAO.getUsernameByEmail(emailUtente); // Ottieni l'username
+
+        // Crea gli oggetti Text per l'username (in grassetto) e il contenuto (a capo)
+        Text usernameText = new Text(username + ": ");
+        usernameText.setStyle("-fx-font-weight: bold;");
+        Text contenutoText = new Text(contenuto.getTesto());
+
+        // Crea un TextFlow per contenere l'username e il contenuto
+        TextFlow textFlow = new TextFlow(usernameText, contenutoText);
+        textFlow.setStyle("-fx-padding: 10;");
+
+        // Aggiungi il TextFlow al contenitore
+        AreaCont.getChildren().add(textFlow);
     }
 
     @FXML
@@ -120,9 +139,13 @@ public class HomePageController {
         javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
         groupButton.setOnAction(event -> {
             titoloGruppo = NomiGruppi;
-            Partecipante = false;
-            iscrivitiButton.setVisible(true);
+            Partecipante = partecipanteDAO.GiaPartecipante(userEmail, titoloGruppo);
+            iscrivitiButton.setDisable(Partecipante);
             AreaCont.getChildren().clear();
+            if (Partecipante) {
+                MostraPost(NomiGruppi);
+            }
+            selectedGroupLabel.setText("Gruppo selezionato: " + NomiGruppi);
         });
         CercaGruppi.getChildren().add(groupButton);
     }
@@ -150,10 +173,11 @@ public class HomePageController {
 
         Partecipante nuovoPartecipante = new Partecipante(userEmail, titoloGruppo, Date.valueOf(LocalDate.now()));
         partecipanteDAO.insertPartecipante(nuovoPartecipante);
-        iscrivitiButton.setVisible(false);
+        iscrivitiButton.setDisable(true); // Disable the button after subscription
         MostraGruppi();
         Partecipante = true;
         MostraPost(titoloGruppo);
+        selectedGroupLabel.setText("Gruppo selezionato: " + titoloGruppo);
     }
 
     @FXML
@@ -169,10 +193,35 @@ public class HomePageController {
             stage.setTitle("Statistiche Mensili");
             stage.setScene(new Scene(root));
             stage.show();
-            stage.setResizable(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void RitornaLogin(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
+        stage.setResizable(false);
+    }
+
+    @FXML
+    private void LaciaGruppo() {
+        if (titoloGruppo == null) {
+            MostraAlert("Devi selezionare un gruppo.");
+            return;
+        }
+
+        Partecipante partecipante = new Partecipante(userEmail, titoloGruppo, (java.util.Date) null);
+        partecipanteDAO.deletePartecipante(partecipante);
+        iscrivitiButton.setDisable(false); // Enable the button after leaving the group
+        MostraGruppi();
+        selectedGroupLabel.setText("Nessun gruppo selezionato");
+        AreaCont.getChildren().clear();
+        Partecipante = false;
     }
 
 }

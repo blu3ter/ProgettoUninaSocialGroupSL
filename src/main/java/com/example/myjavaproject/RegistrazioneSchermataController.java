@@ -17,8 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class RegistrazioneSchermataController {
-    public Button ProseguiButton1;
-    public Button LoginButton1;
+    public Button ProseguiButton;
+    public Button RitornaLoginButton;
     @FXML
     private TextField FieldNome;
     @FXML
@@ -31,8 +31,7 @@ public class RegistrazioneSchermataController {
     private TextField FieldUsername;
     @FXML
     private TextField FieldBio;
-    @FXML
-    public Text RegistrazioneAvvenuta;
+
 
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
@@ -53,6 +52,11 @@ public class RegistrazioneSchermataController {
             return;
         }
 
+        if ( password.length() < 8){
+            MostraAlert("La password deve essere lunga di almeno 8 caratteri");
+            return;
+        }
+
         if (utenteDAO.EmailEsistente(email)) {
             MostraAlert("Esiste già un'email uguale.");
             return;
@@ -70,12 +74,19 @@ public class RegistrazioneSchermataController {
 
         Utente nuovoUtente = new Utente(nome, cognome, email, password, username, bio);
         utenteDAO.insertUtente(nuovoUtente);
-        RegistrazioneAvvenuta.setVisible(true);
+        MostraAlertPositivo("Registrazione avvenuta con successo!\n Ritorna alla schermata di Login per accedere.");
     }
 
     private void MostraAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Errore");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void MostraAlertPositivo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Registrazione completata");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
@@ -93,13 +104,23 @@ public class RegistrazioneSchermataController {
 
 
 
-    public void IngrandisciApriUnAccount() {
-        ProseguiButton1.setScaleX(1.1);
-        ProseguiButton1.setScaleY(1.1);
+    public void IngrandisciCreaAccount() {
+        ProseguiButton.setScaleX(1.1);
+        ProseguiButton.setScaleY(1.1);
     }
 
-    public void RiduciApriUnAccount() {
-        ProseguiButton1.setScaleX(1);
-        ProseguiButton1.setScaleY(1);
+    public void RiduciCreaAccount() {
+        ProseguiButton.setScaleX(1);
+        ProseguiButton.setScaleY(1);
+    }
+
+    public void IngrandisciRitornaLogin() {
+        RitornaLoginButton.setScaleX(1.1);
+        RitornaLoginButton.setScaleY(1.1);
+    }
+
+    public void RiduciRitornaLogin() {
+        RitornaLoginButton.setScaleX(1);
+        RitornaLoginButton.setScaleY(1);
     }
 }

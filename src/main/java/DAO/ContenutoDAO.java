@@ -95,9 +95,13 @@ public class ContenutoDAO {
 
     // Metodo per ottenere la media dei post in un gruppo specifico in un mese specifico
     public double getMediaPostPerGruppo(String titoloGruppo, int mese, int anno) {
-        String query = "SELECT COUNT(*) AS numero_post " +
-                "FROM contenuto " +
-                "WHERE gruppo_app = ? AND MONTH(data) = ? AND YEAR(data) = ?";
+        String query = "SELECT AVG(daily_post_count) AS average_posts_per_day " +
+                "FROM ( " +
+                "    SELECT COUNT(*) AS daily_post_count " +
+                "    FROM contenuto " +
+                "    WHERE gruppo_app = ? AND EXTRACT(MONTH FROM data) = ? AND EXTRACT(YEAR FROM data) = ? " +
+                "    GROUP BY DATE(data) " +
+                ") AS daily_counts";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, titoloGruppo);
@@ -105,11 +109,35 @@ public class ContenutoDAO {
             stmt.setInt(3, anno);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getDouble("numero_post");
+                return rs.getDouble("average_posts_per_day");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
+
+
+    public Contenuto getContenutoConPiuLikes(String titoloGruppo, int mese, int anno) {
+        String query = "SELECT c.testo, c.data, c.gruppo_app, c.email_utente, COUNT(m.tipo_like) AS numero_likes " +
+                "FROM contenuto c " +
+                "LEFT JOIN mi_piace m ON c.id_contenuto = m.id_contenuto " +
+                "WHERE c.gruppo_app = ? AND EXTRACT(MONTH FROM c.data) = ? AND EXTRACT(YEAR FROM c.data) = ? " +
+                "GROUP BY c.id_contenuto " +
+                "ORDER BY numero_likes DESC " +
+                "LIMIT 1";
+        return getContenutoByQuery(titoloGruppo, mese, anno, query);
+    }
+
+    public Contenuto getContenutoConMenoLikes(String titoloGruppo, int mese, int anno) {
+        String query = "SELECT c.testo, c.data, c.gruppo_app, c.email_utente, COUNT(m.tipo_like) AS numero_likes " +
+                "FROM contenuto c " +
+                "LEFT JOIN mi_piace m ON c.id_contenuto = m.id_contenuto " +
+                "WHERE c.gruppo_app = ? AND EXTRACT(MONTH FROM c.data) = ? AND EXTRACT(YEAR FROM c.data) = ? " +
+                "GROUP BY c.id_contenuto " +
+                "ORDER BY numero_likes ASC " +
+                "LIMIT 1";
+        return getContenutoByQuery(titoloGruppo, mese, anno, query);
+    }
+
 }

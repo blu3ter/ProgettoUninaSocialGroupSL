@@ -53,15 +53,20 @@ public class StatisticheController {
 
             Contenuto contenutoMaxCommenti = contenutoDAO.getContenutoConPiuCommenti(gruppo.getTitolo(), monthValue, year);
             Contenuto contenutoMinCommenti = contenutoDAO.getContenutoConMenoCommenti(gruppo.getTitolo(), monthValue, year);
+            Contenuto contenutoMaxLikes = contenutoDAO.getContenutoConPiuLikes(gruppo.getTitolo(), monthValue, year);
+            Contenuto contenutoMinLikes = contenutoDAO.getContenutoConMenoLikes(gruppo.getTitolo(), monthValue, year);
             double mediaPost = contenutoDAO.getMediaPostPerGruppo(gruppo.getTitolo(), monthValue, year);
 
             statisticsVBox.getChildren().add(new Label("Contenuto con più commenti: " +
                     (contenutoMaxCommenti != null ? contenutoMaxCommenti.getTesto() : "N/A")));
             statisticsVBox.getChildren().add(new Label("Contenuto con meno commenti: " +
                     (contenutoMinCommenti != null ? contenutoMinCommenti.getTesto() : "N/A")));
-            statisticsVBox.getChildren().add(new Label("Numero medio di post: " + mediaPost));
+            statisticsVBox.getChildren().add(new Label("Contenuto con più mi piace: " +
+                    (contenutoMaxLikes != null ? contenutoMaxLikes.getTesto() : "N/A")));
+            statisticsVBox.getChildren().add(new Label("Contenuto con meno mi piace: " +
+                    (contenutoMinLikes != null ? contenutoMinLikes.getTesto() : "N/A")));
+            statisticsVBox.getChildren().add(new Label("Numero medio di post giornalieri: " + mediaPost));
             statisticsVBox.getChildren().add(new Label("---------------------------"));
         }
     }
-
 }

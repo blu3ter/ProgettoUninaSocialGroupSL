@@ -78,4 +78,19 @@ public class UtenteDAO {
             e.printStackTrace();
         }
     }
+
+    public static String getUsernameByEmail(String email) {
+        String query = "SELECT username FROM utente WHERE email = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

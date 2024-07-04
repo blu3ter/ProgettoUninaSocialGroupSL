@@ -1,31 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane prefHeight="473.0" prefWidth="550.0" style="-fx-background-color: #012652;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.myjavaproject.StatisticheController">
-    <children>
-        <VBox alignment="TOP_CENTER" spacing="10.0" layoutX="50.0" layoutY="50.0">
-            <children>
-                <Label text="Seleziona Mese" />
-                <ComboBox fx:id="monthComboBox" />
-                <Button text="Visualizza Statistiche" onAction="#MostraRisultati" />
-                <ScrollPane prefHeight="400.0" prefWidth="500.0">
-                    <content>
-                        <VBox fx:id="statisticsVBox" spacing="10.0">
-                            <padding>
-                                <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
-                            </padding>
-                        </VBox>
-                    </content>
-                </ScrollPane>
-            </children>
-        </VBox>
-    </children>
+    <Text fill="WHITE" layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistiche"
+          textAlignment="CENTER" wrappingWidth="520.0000000000001" AnchorPane.bottomAnchor="431.9984375"
+          AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="6.41796875">
+        <font>
+            <Font name="System Bold" size="20.0"/>
+        </font>
+    </Text>
+    <VBox alignment="TOP_CENTER" layoutX="13.0" layoutY="42.0" prefHeight="420.0" prefWidth="520.0" spacing="10.0"
+          style="-fx-background-color: white;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+        <HBox prefHeight="54.0" prefWidth="525.0" spacing="80.0">
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <padding>
+                <Insets left="90.0" top="10.0"/>
+            </padding>
+            <Label prefHeight="30.0" prefWidth="140.0" text="Seleziona Mese">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+            </Label>
+            <ComboBox fx:id="monthComboBox" prefHeight="30.0" prefWidth="100.0">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+            </ComboBox>
+        </HBox>
+        <Button alignment="CENTER" onAction="#MostraRisultati" prefHeight="40.0" prefWidth="120.0"
+                style="-fx-background-color: #012652; -fx-background-radius: 5px;" text="Visualizza"
+                textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Button>
+        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="305.0" prefWidth="520.0"
+                    style="-fx-background-color: white;">
+            <VBox fx:id="statisticsVBox" prefHeight="320.0" prefWidth="504.0" spacing="10.0"
+                  style="-fx-background-color: white;">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+            </VBox>
+        </ScrollPane>
+    </VBox>
 </AnchorPane>

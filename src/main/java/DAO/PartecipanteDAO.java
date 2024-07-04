@@ -18,6 +18,18 @@ public class PartecipanteDAO {
             e.printStackTrace();
         }
     }
+    public void deletePartecipante(Partecipante partecipante){
+        String query = "DELETE FROM partecipante WHERE email_partecipante = ? AND titolo_gruppo = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, partecipante.getEmailPartecipante());
+            stmt.setString(2, partecipante.getTitoloGruppo());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public boolean GiaPartecipante(String email, String titoloGruppo) {
         String query = "SELECT COUNT(*) FROM partecipante WHERE email_partecipante = ? AND titolo_gruppo = ?";
