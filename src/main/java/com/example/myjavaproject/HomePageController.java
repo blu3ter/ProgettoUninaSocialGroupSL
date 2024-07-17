@@ -91,7 +91,7 @@ public class HomePageController {
 
     private void CaricaContenuto(Contenuto contenuto) {
         String emailUtente = contenuto.getEmailUtente();
-        String username = UtenteDAO.getUsernameByEmail(emailUtente); // Ottieni l'username
+        String username = UtenteDAO.getUsernameDaEmail(emailUtente); // Ottieni l'username
 
         // Crea gli oggetti Text per l'username (in grassetto) e il contenuto (a capo)
         Text usernameText = new Text(username + ": ");

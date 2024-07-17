@@ -2,6 +2,7 @@ package DAO;
 
 import Oggetti.Partecipante;
 import Util.DBUtil;
+import Util.DatabaseAccessException;
 
 import java.sql.*;
 
@@ -15,7 +16,7 @@ public class PartecipanteDAO {
             stmt.setDate(3, new Date(partecipante.getDataIscrizione().getTime()));
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante l'inserimento di un nuovo partecipante",e);
         }
     }
     public void deletePartecipante(Partecipante partecipante){
@@ -26,7 +27,7 @@ public class PartecipanteDAO {
             stmt.setString(2, partecipante.getTitoloGruppo());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante la cancellazione del partecipante",e);
         }
 
     }
@@ -43,7 +44,7 @@ public class PartecipanteDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante la verifica del partecipante",e);
         }
         return false;
     }

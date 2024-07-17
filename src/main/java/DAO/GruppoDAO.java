@@ -2,6 +2,7 @@ package DAO;
 
 import Oggetti.Gruppo;
 import Util.DBUtil;
+import Util.DatabaseAccessException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class GruppoDAO {
                 gruppi.add(gruppo);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante il recupero dei gruppi",e);
         }
         return gruppi;
     }
@@ -47,7 +48,7 @@ public class GruppoDAO {
                 gruppi.add(gruppo);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante la ricerca dei gruppi",e);
         }
         return gruppi;
     }
@@ -68,7 +69,7 @@ public class GruppoDAO {
                 gruppi.add(gruppo);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante il recupero dei gruppi",e);
         }
         return gruppi;
     }

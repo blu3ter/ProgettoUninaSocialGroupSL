@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
-    public Button IscrivitiBiancoButton;
     public ImageView logo;
     @FXML
     private Button AccediButton;
@@ -31,6 +30,7 @@ public class LoginController {
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
     public void SwitchSchermataRegistrazione(ActionEvent actionEvent) throws IOException {
+        //carico il file FXML della Registrazione
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("RegistrazioneSchermata.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -44,10 +44,12 @@ public class LoginController {
         String email = FieldEmail.getText();
         String password = FieldPassword.getText();
 
+        //controllo se i campi Field sono stati riempiti, altrimenti rilascia un errore
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             MostraAlert("Email e password sono obbligatorie.");
             return;
         }
+
 
         Utente utente = utenteDAO.GetEmailePassword(email, password);
         if (utente != null) {
@@ -55,7 +57,6 @@ public class LoginController {
                 CaricaHomePage(actionEvent, email);
             } catch (IOException e) {
                 e.printStackTrace();
-                MostraAlert("Impossibile caricare la dashboard: " + e.getMessage());
             }
         } else {
             MostraAlert("Email o password errati.");

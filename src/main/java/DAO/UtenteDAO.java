@@ -2,6 +2,7 @@ package DAO;
 
 import Oggetti.Utente;
 import Util.DBUtil;
+import Util.DatabaseAccessException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +29,7 @@ public class UtenteDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante l'accesso al database per verificare l'esistenza dell'Utente",e);
         }
         return null;
     }
@@ -43,7 +44,7 @@ public class UtenteDAO {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante l'accesso al database per verificare l'esistenza dell'email",e);
         }
         return false;
     }
@@ -58,7 +59,8 @@ public class UtenteDAO {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante l'accesso al database per verificare l'esistenza dell'Username",e);
+
         }
         return false;
     }
@@ -75,11 +77,11 @@ public class UtenteDAO {
             stmt.setString(6, utente.getBio()); // Bio può essere null
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante l'inserimento di un nuovo utente",e);
         }
     }
 
-    public static String getUsernameByEmail(String email) {
+    public static String getUsernameDaEmail(String email) {
         String query = "SELECT username FROM utente WHERE email = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -89,7 +91,7 @@ public class UtenteDAO {
                 return rs.getString("username");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante il recupero dell'username",e);
         }
         return null;
     }

@@ -2,6 +2,7 @@ package DAO;
 
 import Oggetti.Contenuto;
 import Util.DBUtil;
+import Util.DatabaseAccessException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ContenutoDAO {
     public List<Contenuto> getContenutiGruppo(String gruppoApp) {
@@ -27,7 +29,7 @@ public class ContenutoDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante il recupero dei contenuti",e);
         }
         return contenuti;
     }
@@ -42,7 +44,7 @@ public class ContenutoDAO {
             stmt.setString(4, contenuto.getEmailUtente());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante l'inserimento del contenuto",e);
         }
     }
 
@@ -88,7 +90,7 @@ public class ContenutoDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante il recupero del contenuto",e);
         }
         return null;
     }
@@ -109,10 +111,10 @@ public class ContenutoDAO {
             stmt.setInt(3, anno);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getDouble("average_posts_per_day");
+                return rs.getDouble("media_post_giornaliera");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Errore durante il recupero dei contenuti",e);
         }
         return 0;
     }

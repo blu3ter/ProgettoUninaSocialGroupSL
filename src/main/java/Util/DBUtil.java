@@ -19,8 +19,8 @@ public class DBUtil {
                 stmt.execute("SET search_path TO social_group");
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new SQLException(e);
+            throw new DatabaseAccessException("Errore durante l'accesso al DB",e);
+
         }
 
         return connection;
