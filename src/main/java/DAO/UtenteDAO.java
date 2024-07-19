@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UtenteDAO {
-    public Utente GetEmailePassword(String email, String password) {
+    public Utente getEmailePassword(String email, String password) {
         String query = "SELECT * FROM utente WHERE email = ? AND password = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -82,6 +82,7 @@ public class UtenteDAO {
     }
 
     public static String getUsernameDaEmail(String email) {
+        //prende l'email dell'utente per estrarmi l'username, e farlo apparire affianco il contenuto da lui creato
         String query = "SELECT username FROM utente WHERE email = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {

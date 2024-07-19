@@ -34,7 +34,7 @@
          <VBox.margin>
             <Insets top="-11.0" />
          </VBox.margin>
-         <VBox fx:id="groupVBox" prefHeight="208.0" prefWidth="244.0" spacing="10.0" style="-fx-background-color: white;">
+         <VBox fx:id="gruppiVBox" prefHeight="208.0" prefWidth="244.0" spacing="10.0" style="-fx-background-color: white;">
             <padding>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
@@ -53,7 +53,7 @@
             </font>
          </Text>
       </HBox>
-      <TextField fx:id="FieldCercaTesto" maxWidth="-Infinity" onAction="#Cercagruppo" prefHeight="28.0" prefWidth="256.0" promptText="Tramite nome o tema" style="-fx-background-color: trasparent;">
+      <TextField fx:id="fieldCercaTesto" maxWidth="-Infinity" onAction="#Cercagruppo" prefHeight="28.0" prefWidth="256.0" promptText="Tramite nome o tema" style="-fx-background-color: trasparent;">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -64,11 +64,11 @@
             <Insets top="-12.0" />
          </VBox.margin>
       </TextField>
-      <ScrollPane fx:id="GruppiTrovatiScrollPane" hbarPolicy="NEVER" prefHeight="210.0" prefWidth="230.0" vbarPolicy="ALWAYS">
+      <ScrollPane fx:id="gruppiTrovatiScrollPane" hbarPolicy="NEVER" prefHeight="210.0" prefWidth="230.0" vbarPolicy="ALWAYS">
          <VBox.margin>
             <Insets top="-11.0" />
          </VBox.margin>
-         <VBox fx:id="CercaGruppi" prefHeight="210.0" prefWidth="242.0" spacing="10.0" style="-fx-background-color: white;">
+         <VBox fx:id="cercaGruppi" prefHeight="210.0" prefWidth="242.0" spacing="10.0" style="-fx-background-color: white;">
             <padding>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
@@ -76,14 +76,14 @@
       </ScrollPane>
    </VBox>
    <VBox layoutX="261.0" layoutY="93.0" prefHeight="490.0" prefWidth="639.0">
-      <ScrollPane fx:id="postScrollPane" prefHeight="384.0" prefWidth="640.0" vbarPolicy="ALWAYS">
-         <VBox fx:id="AreaCont" prefHeight="387.0" prefWidth="624.0" spacing="10.0" style="-fx-background-color: white;">
+      <ScrollPane fx:id="contenutiScrollPane" prefHeight="384.0" prefWidth="640.0" vbarPolicy="ALWAYS">
+         <VBox fx:id="areaContenuto" prefHeight="387.0" prefWidth="624.0" spacing="10.0" style="-fx-background-color: white;">
             <padding>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
          </VBox>
       </ScrollPane>
-      <TextArea fx:id="AreaNuovoPost" prefHeight="97.0" prefWidth="639.0" promptText="Scrivi un nuovo contenuto...">
+      <TextArea fx:id="areaNuovoPost" prefHeight="97.0" prefWidth="639.0" promptText="Scrivi un nuovo contenuto...">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -107,7 +107,7 @@
             <Insets right="200.0" top="8.0" />
          </HBox.margin>
       </Text>
-      <Button fx:id="RitornaLoginButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#RitornaLogin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #e75321; -fx-background-radius: 10;" text="Logout" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="ritornaLoginButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#RitornaLogin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #e75321; -fx-background-radius: 10;" text="Logout" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -119,46 +119,58 @@
          </HBox.margin>
       </Button>
    </HBox>
-   <HBox alignment="CENTER_LEFT" layoutX="260.0" layoutY="47.0" prefHeight="46.0" prefWidth="646.0" style="-fx-background-color: #012652; -fx-background-radius: 10px;">
+   <HBox alignment="CENTER_LEFT" layoutX="260.0" layoutY="47.0" prefHeight="46.0" prefWidth="646.0"
+         style="-fx-background-color: #012652; -fx-background-radius: 10px;">
       <opaqueInsets>
-         <Insets />
+         <Insets/>
       </opaqueInsets>
-      <children>
-         <Label fx:id="selectedGroupLabel" style="-fx-padding: 0 0 0 10px;" text="Nessun gruppo selezionato" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font>
-         </Label>
-      </children>
+      <Label fx:id="labelGruppoSelezionato" style="-fx-padding: 0 0 0 10px;" text="Nessun gruppo selezionato"
+             textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0"/>
+         </font>
+      </Label>
    </HBox>
-   <HBox alignment="TOP_CENTER" layoutY="594.4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="89.0" prefWidth="906.0" spacing="20.0" style="-fx-background-color: #012652;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="594.0">
+   <HBox alignment="TOP_CENTER" layoutY="594.4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="89.0"
+         prefWidth="906.0" spacing="20.0" style="-fx-background-color: #012652;" AnchorPane.bottomAnchor="0.0"
+         AnchorPane.topAnchor="594.0">
       <opaqueInsets>
-         <Insets />
+         <Insets/>
       </opaqueInsets>
-      <children>
-         <Button fx:id="iscrivitiButton" disable="true" mnemonicParsing="false" onAction="#iscrivitiAlGruppo" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #012652; -fx-background-radius: 10; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" text="Vuoi Iscriverti?" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="14.0" />
-            </font>
-         </Button>
-         <Button fx:id="CreaContButton" mnemonicParsing="false" onAction="#CreaPost" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #012652; -fx-background-radius: 10px; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" text="Crea Post" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font>
-         </Button>
-         <Button id="statistiche" fx:id="StatisticheButton" mnemonicParsing="false" onAction="#MostraStatistiche" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #012652; -fx-background-radius: 10; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" text="Statistiche" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font>
-         </Button>
-         <Button fx:id="LaciaGruppoButton" mnemonicParsing="false" onAction="#LaciaGruppo" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #012652; -fx-background-radius: 10px; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" text="Lascia Gruppo" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font>
-         </Button>
-      </children>
       <padding>
-         <Insets top="23.0" />
+         <Insets top="23.0"/>
       </padding>
+      <Button fx:id="iscrivitiButton" disable="true" mnemonicParsing="false" onAction="#IscrivitiAlGruppo"
+              prefHeight="40.0" prefWidth="190.0"
+              style="-fx-background-color: #012652; -fx-background-radius: 10; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;"
+              text="Vuoi Iscriverti?" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0"/>
+         </font>
+      </Button>
+      <Button fx:id="creaContButton" mnemonicParsing="false" onAction="#CreaPost" prefHeight="40.0" prefWidth="190.0"
+              style="-fx-background-color: #012652; -fx-background-radius: 10px; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;"
+              text="Crea Post" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0"/>
+         </font>
+      </Button>
+      <Button id="statistiche" fx:id="StatisticheButton" mnemonicParsing="false" onAction="#MostraStatistiche"
+              prefHeight="40.0" prefWidth="190.0"
+              style="-fx-background-color: #012652; -fx-background-radius: 10; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;"
+              text="Statistiche" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0"/>
+         </font>
+      </Button>
+      <Button fx:id="lasciaGruppoButton" mnemonicParsing="false" onAction="#LasciaGruppo" prefHeight="40.0"
+              prefWidth="190.0"
+              style="-fx-background-color: #012652; -fx-background-radius: 10px; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;"
+              text="Lascia Gruppo" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0"/>
+         </font>
+      </Button>
    </HBox>
+   <Button fx:id="creaGruppoButton" mnemonicParsing="false" onAction="#VaiAllaSchermataCreaGruppo" text="Crea Gruppo" />
 </AnchorPane>

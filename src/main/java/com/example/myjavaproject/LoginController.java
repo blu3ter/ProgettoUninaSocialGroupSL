@@ -19,17 +19,17 @@ import java.io.IOException;
 public class LoginController {
     public ImageView logo;
     @FXML
-    private Button AccediButton;
+    private Button accediButton;
     @FXML
-    private Button IscrivitiBluButton;
+    private Button iscrivitiBluButton;
     @FXML
-    private TextField FieldEmail;
+    private TextField fieldEmail;
     @FXML
-    private PasswordField FieldPassword;
+    private PasswordField fieldPassword;
 
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
-    public void SwitchSchermataRegistrazione(ActionEvent actionEvent) throws IOException {
+    public void VaiAllaSchermataRegistrazione(ActionEvent actionEvent) throws IOException {
         //carico il file FXML della Registrazione
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("RegistrazioneSchermata.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -41,8 +41,8 @@ public class LoginController {
     }
 
     public void VaiAllaHomepage(ActionEvent actionEvent) {
-        String email = FieldEmail.getText();
-        String password = FieldPassword.getText();
+        String email = fieldEmail.getText();
+        String password = fieldPassword.getText();
 
         //controllo se i campi Field sono stati riempiti, altrimenti rilascia un errore
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
@@ -50,8 +50,8 @@ public class LoginController {
             return;
         }
 
-
-        Utente utente = utenteDAO.GetEmailePassword(email, password);
+        //preleva le informazioni dell'utente per carica la HomePage con le sue informazioni
+        Utente utente = utenteDAO.getEmailePassword(email, password);
         if (utente != null) {
             try {
                 CaricaHomePage(actionEvent, email);
@@ -64,11 +64,15 @@ public class LoginController {
     }
 
     private void CaricaHomePage(ActionEvent actionEvent, String email) throws IOException {
+        //crea un oggetto FXMLLoader, che è utilizzato per caricare un file FXML
+        // getClass() restituisce la classe corrente, e getResource cerca il file HomePage.fxml nel classpath.
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(loader.load());
-        HomePageController controller = loader.getController();
-        controller.setUserEmail(email);
+
+
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow(); //Qui si sta recuperando l'oggetto Stage  associato all'evento actionEvent
+        Scene scene = new Scene(loader.load()); //Questo metodo carica effettivamente il file FXML
+        HomePageController controller = loader.getController(); //passa il controller alla HomePage
+        controller.setUtenteEmail(email);
         stage.setTitle("Home Page");
         stage.setScene(scene);
         stage.show();
@@ -84,22 +88,22 @@ public class LoginController {
     }
 
     public void RiduciAccedi() {
-        AccediButton.setScaleX(1.0);
-        AccediButton.setScaleY(1.0);
+        accediButton.setScaleX(1.0);
+        accediButton.setScaleY(1.0);
     }
 
     public void IngrandisciAccedi() {
-        AccediButton.setScaleX(1.1);
-        AccediButton.setScaleY(1.1);
+        accediButton.setScaleX(1.1);
+        accediButton.setScaleY(1.1);
     }
 
     public void IngrandisciIscriviti() {
-        IscrivitiBluButton.setScaleX(1.1);
-        IscrivitiBluButton.setScaleY(1.1);
+        iscrivitiBluButton.setScaleX(1.1);
+        iscrivitiBluButton.setScaleY(1.1);
     }
 
     public void RiduciIscriviti() {
-        IscrivitiBluButton.setScaleX(1);
-        IscrivitiBluButton.setScaleY(1);
+        iscrivitiBluButton.setScaleX(1);
+        iscrivitiBluButton.setScaleY(1);
     }
 }

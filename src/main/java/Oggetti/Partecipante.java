@@ -8,8 +8,6 @@ public class Partecipante {
     private String titoloGruppo;
     private Date dataIscrizione;
 
-    public Partecipante(String userEmail, String titolo, LocalDate now) {
-    }
 
     public String getEmailPartecipante() {
         return emailPartecipante;

@@ -54,7 +54,7 @@
             <Insets top="60.0"/>
          </VBox.margin>
       </Text>
-      <Button fx:id="IscrivitiBluButton" mnemonicParsing="false" onAction="#SwitchSchermataRegistrazione"
+      <Button fx:id="iscrivitiBluButton" mnemonicParsing="false" onAction="#VaiAllaSchermataRegistrazione"
               onMouseEntered="#IngrandisciIscriviti" onMouseExited="#RiduciIscriviti" prefHeight="35.0"
               prefWidth="150.0" style="-fx-background-color: #012652; -fx-background-radius: 5;" text="Iscriviti adesso"
               textFill="WHITE">
@@ -64,15 +64,15 @@
       </Button>
    </VBox>
    <VBox alignment="CENTER" layoutX="536.0" layoutY="192.0" prefHeight="296.0" prefWidth="298.0" spacing="20.0">
-      <TextField fx:id="FieldEmail" maxWidth="-Infinity" prefHeight="25.0" prefWidth="210.0" promptText="email"
+      <TextField fx:id="fieldEmail" maxWidth="-Infinity" prefHeight="25.0" prefWidth="210.0" promptText="email"
                  style="-fx-background-radius: 20;"/>
-      <PasswordField fx:id="FieldPassword" maxWidth="-Infinity" prefHeight="25.0" prefWidth="210.0"
+      <PasswordField fx:id="fieldPassword" maxWidth="-Infinity" prefHeight="25.0" prefWidth="210.0"
                      promptText="password" style="-fx-background-radius: 20;">
          <VBox.margin>
             <Insets/>
          </VBox.margin>
       </PasswordField>
-      <Button fx:id="AccediButton" mnemonicParsing="false" onAction="#VaiAllaHomepage"
+      <Button fx:id="accediButton" mnemonicParsing="false" onAction="#VaiAllaHomepage"
               onMouseEntered="#IngrandisciAccedi" onMouseExited="#RiduciAccedi" prefHeight="35.0" prefWidth="150.0"
               style="-fx-background-color: #012652; -fx-background-radius: 5;" text="Accedi" textFill="WHITE">
          <font>

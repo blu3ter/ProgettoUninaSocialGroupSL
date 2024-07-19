@@ -11,37 +11,36 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class RegistrazioneSchermataController {
-    public Button ProseguiButton;
-    public Button RitornaLoginButton;
+    public Button proseguiButton;
+    public Button ritornaLoginButton;
     @FXML
-    private TextField FieldNome;
+    private TextField fieldNome;
     @FXML
-    private TextField FieldCognome;
+    private TextField fieldCognome;
     @FXML
-    private TextField FieldEmail;
+    private TextField fieldEmail;
     @FXML
-    private PasswordField FieldPassword;
+    private PasswordField fieldPassword;
     @FXML
-    private TextField FieldUsername;
+    private TextField fieldUsername;
     @FXML
-    private TextField FieldBio;
+    private TextField fieldBio;
 
 
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
     public void ContinuaPrimoAccesso() {
-        String nome = FieldNome.getText();
-        String cognome = FieldCognome.getText();
-        String email = FieldEmail.getText();
-        String password = FieldPassword.getText();
-        String username = FieldUsername.getText();
-        String bio = FieldBio.getText(); // Bio può essere null
+        String nome = fieldNome.getText();
+        String cognome = fieldCognome.getText();
+        String email = fieldEmail.getText();
+        String password = fieldPassword.getText();
+        String username = fieldUsername.getText();
+        String bio = fieldBio.getText(); // Bio può essere null
 
         if (nome == null || nome.trim().isEmpty() ||
                 cognome == null || cognome.trim().isEmpty() ||
@@ -72,9 +71,10 @@ public class RegistrazioneSchermataController {
             bio = null;
         }
 
+        //crea un utente nuovo e lo inserisci nel DB
         Utente nuovoUtente = new Utente(nome, cognome, email, password, username, bio);
         utenteDAO.insertUtente(nuovoUtente);
-        MostraAlertPositivo("Registrazione avvenuta con successo!\n Ritorna alla schermata di Login per accedere.");
+        MostraAlertPositivo();
     }
 
     private void MostraAlert(String message) {
@@ -84,15 +84,16 @@ public class RegistrazioneSchermataController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    private void MostraAlertPositivo(String message) {
+    private void MostraAlertPositivo() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Registrazione completata");
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText("Registrazione avvenuta con successo!\n Ritorna alla schermata di Login per accedere.");
         alert.showAndWait();
     }
 
     public void RitornaLogin(ActionEvent actionEvent) throws IOException {
+        //crea un oggetto FXMLLoader per ritornare poi alla finestra del Login
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -105,22 +106,22 @@ public class RegistrazioneSchermataController {
 
 
     public void IngrandisciCreaAccount() {
-        ProseguiButton.setScaleX(1.1);
-        ProseguiButton.setScaleY(1.1);
+        proseguiButton.setScaleX(1.1);
+        proseguiButton.setScaleY(1.1);
     }
 
     public void RiduciCreaAccount() {
-        ProseguiButton.setScaleX(1);
-        ProseguiButton.setScaleY(1);
+        proseguiButton.setScaleX(1);
+        proseguiButton.setScaleY(1);
     }
 
     public void IngrandisciRitornaLogin() {
-        RitornaLoginButton.setScaleX(1.1);
-        RitornaLoginButton.setScaleY(1.1);
+        ritornaLoginButton.setScaleX(1.1);
+        ritornaLoginButton.setScaleY(1.1);
     }
 
     public void RiduciRitornaLogin() {
-        RitornaLoginButton.setScaleX(1);
-        RitornaLoginButton.setScaleY(1);
+        ritornaLoginButton.setScaleX(1);
+        ritornaLoginButton.setScaleY(1);
     }
 }

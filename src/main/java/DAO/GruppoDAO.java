@@ -4,15 +4,13 @@ import Oggetti.Gruppo;
 import Util.DBUtil;
 import Util.DatabaseAccessException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GruppoDAO {
-    public List<Gruppo> getGruppiByUserEmail(String email) {
+    public List<Gruppo> getGruppiDaUtenteEmail(String email) {
+        //la query prendi i gruppi dove partecipa l'utente
         String query = "SELECT g.titolo, g.categoria, g.email_admin FROM gruppo g JOIN partecipante p ON g.titolo = p.titolo_gruppo WHERE p.email_partecipante = ?";
         List<Gruppo> gruppi = new ArrayList<>();
         try (Connection conn = DBUtil.getConnection();
@@ -27,7 +25,7 @@ public class GruppoDAO {
                 gruppi.add(gruppo);
             }
         } catch (SQLException e) {
-            throw new DatabaseAccessException("Errore durante il recupero dei gruppi",e);
+            throw new DatabaseAccessException("Errore durante il recupero dei gruppi", e);
         }
         return gruppi;
     }
@@ -40,21 +38,21 @@ public class GruppoDAO {
             stmt.setString(1, "%" + searchText + "%");
             stmt.setString(2, "%" + searchText + "%");
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            while (rs.next()) { //per ogni risultato crea l'oggetto gruppo e ci inserisce i valori
                 Gruppo gruppo = new Gruppo();
                 gruppo.setTitolo(rs.getString("titolo"));
                 gruppo.setCategoria(rs.getString("categoria"));
                 gruppo.setEmailAdmin(rs.getString("email_admin"));
-                gruppi.add(gruppo);
+                gruppi.add(gruppo); //inserisce nella listaù
             }
         } catch (SQLException e) {
-            throw new DatabaseAccessException("Errore durante la ricerca dei gruppi",e);
+            throw new DatabaseAccessException("Errore durante la ricerca dei gruppi", e);
         }
         return gruppi;
     }
 
     // Metodo per ottenere i gruppi in cui l'utente è admin
-    public List<Gruppo> getGruppiByAdminEmail(String emailAdmin) {
+    public List<Gruppo> getGruppiDaAdminEmail(String emailAdmin) {
         String query = "SELECT titolo, categoria, email_admin FROM gruppo WHERE email_admin = ?";
         List<Gruppo> gruppi = new ArrayList<>();
         try (Connection conn = DBUtil.getConnection();
@@ -69,11 +67,26 @@ public class GruppoDAO {
                 gruppi.add(gruppo);
             }
         } catch (SQLException e) {
-            throw new DatabaseAccessException("Errore durante il recupero dei gruppi",e);
+            throw new DatabaseAccessException("Errore durante il recupero dei gruppi", e);
         }
         return gruppi;
     }
 
+
+    // Metodo per inserire un nuovo gruppo nel database
+    public void insertGruppo(Gruppo gruppo) {
+        String query = "INSERT INTO gruppo (titolo, categoria, email_admin, data_creazione) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, gruppo.getTitolo());
+            stmt.setString(2, gruppo.getCategoria());
+            stmt.setString(3, gruppo.getEmailAdmin());
+            stmt.setDate(4, Date.valueOf(gruppo.getDataCreazione()));
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseAccessException("Errore durante l'inserimento di un nuovo gruppo", e);
+        }
+    }
 
 
 }

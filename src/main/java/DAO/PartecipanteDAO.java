@@ -33,6 +33,7 @@ public class PartecipanteDAO {
     }
 
     public boolean GiaPartecipante(String email, String titoloGruppo) {
+        //controlla se esite l'utente partecipa gia in quel gruppo
         String query = "SELECT COUNT(*) FROM partecipante WHERE email_partecipante = ? AND titolo_gruppo = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {

@@ -9,7 +9,6 @@ public class Utente {
     private String bio;
 
 
-    //vari getter e setter
     public String getNome() {
         return nome;
     }

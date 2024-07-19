@@ -26,28 +26,29 @@ import java.util.List;
 
 public class HomePageController {
     public ScrollPane gruppiScrollPane;
-    public ScrollPane GruppiTrovatiScrollPane;
-    public Button CreaContButton;
-    public ScrollPane postScrollPane;
+    public ScrollPane gruppiTrovatiScrollPane;
+    public Button creaContButton;
+    public ScrollPane contenutiScrollPane;
     public Button StatisticheButton;
-    public Button RitornaLoginButton;
-    public Button LaciaGruppoButton;
+    public Button ritornaLoginButton;
+    public Button lasciaGruppoButton;
+    public Button creaGruppoButton;
     @FXML
-    private VBox groupVBox;
+    private VBox gruppiVBox;
     @FXML
-    private VBox CercaGruppi;
+    private VBox cercaGruppi;
     @FXML
-    private VBox AreaCont;
+    private VBox areaContenuto;
     @FXML
-    private TextField FieldCercaTesto;
+    private TextField fieldCercaTesto;
     @FXML
-    private TextArea AreaNuovoPost;
+    private TextArea areaNuovoPost;
     @FXML
     private Button iscrivitiButton;
     @FXML
-    private Label selectedGroupLabel;
+    private Label labelGruppoSelezionato;
 
-    private String userEmail;
+    private String utenteEmail;
     private String titoloGruppo;
     private boolean Partecipante;
 
@@ -56,98 +57,114 @@ public class HomePageController {
     private final ContenutoDAO contenutoDAO = new ContenutoDAO();
 
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-        MostraGruppi();
+    public void setUtenteEmail(String utenteEmail) {
+        //tutto il controlelr si prenderà l'email dell'utente che ha accesso per gestire i metodi
+        this.utenteEmail = utenteEmail;
+        MostraGruppiDovePartecipi();
     }
 
-    private void MostraGruppi() {
-        List<Gruppo> gruppi = gruppoDAO.getGruppiByUserEmail(userEmail);
-        groupVBox.getChildren().clear();
+    private void MostraGruppiDovePartecipi() {
+        //Prende la lista dei gruppi in cui l'useername è la stessa di chi ha accesso.
+        List<Gruppo> gruppi = gruppoDAO.getGruppiDaUtenteEmail(utenteEmail);
+
+        //pulisce la Vbox dove vengono mostrati i gruppi
+        gruppiVBox.getChildren().clear();
+
+        //per ogni gruppo chiama la funzione che sta sotto
         for (Gruppo gruppo : gruppi) {
-            PartecipanteGruppo(gruppo.getTitolo());
+            CaricaGruppo(gruppo.getTitolo());
         }
     }
 
-    private void PartecipanteGruppo(String NomiGruppi) {
-        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
-        groupButton.setOnAction(event -> {
-            titoloGruppo = NomiGruppi;
+    private void CaricaGruppo(String NomeGruppo) {
+        //crea il bottone con il nome del gruppo
+        javafx.scene.control.Button gruppoButton = new javafx.scene.control.Button(NomeGruppo);
+        gruppoButton.setOnAction(event -> { // azioni che compie al click
+            titoloGruppo = NomeGruppo;
             Partecipante = true;
-            iscrivitiButton.setDisable(true); // Disable the button if the user is already a participant
-            MostraPost(NomiGruppi);
-            selectedGroupLabel.setText("Gruppo selezionato: " + NomiGruppi);
+            iscrivitiButton.setDisable(true); // Disabilita il bottone dato che gia partecipa in quel gruppo.
+            MostraContenuti(NomeGruppo);
+            labelGruppoSelezionato.setText("Gruppo selezionato: " + NomeGruppo);
         });
-        groupVBox.getChildren().add(groupButton);
+        gruppiVBox.getChildren().add(gruppoButton);
     }
 
-    private void MostraPost(String NomiGruppi) {
-        List<Contenuto> contenuti = contenutoDAO.getContenutiGruppo(NomiGruppi);
-        AreaCont.getChildren().clear();
+    private void MostraContenuti(String NomeGruppo) {
+        //crea una lista in cui inserisce i post di un gruppo specifico
+        List<Contenuto> contenuti = contenutoDAO.getContenutiGruppo(NomeGruppo);
+        areaContenuto.getChildren().clear();
+
+        //per ogni contenuto chiama il metodo sotto
         for (Contenuto contenuto : contenuti) {
             CaricaContenuto(contenuto);
         }
     }
 
     private void CaricaContenuto(Contenuto contenuto) {
-        String emailUtente = contenuto.getEmailUtente();
-        String username = UtenteDAO.getUsernameDaEmail(emailUtente); // Ottieni l'username
+        String emailUtente = contenuto.getEmailUtente();//mi prende l'email dell'utente che ha creato il post
+        String username = UtenteDAO.getUsernameDaEmail(emailUtente); // estrae l'username dall'email precedente.
 
         // Crea gli oggetti Text per l'username (in grassetto) e il contenuto (a capo)
-        Text usernameText = new Text(username + ": ");
-        usernameText.setStyle("-fx-font-weight: bold;");
-        Text contenutoText = new Text(contenuto.getTesto());
+        Text testoUsername = new Text(username + ": ");
+        testoUsername.setStyle("-fx-font-weight: bold;");
+        Text testoContenuto = new Text(contenuto.getTesto());
 
-        // Crea un TextFlow per contenere l'username e il contenuto
-        TextFlow textFlow = new TextFlow(usernameText, contenutoText);
+        // Crea un TextFlow per raggupprare l'username e il contenuto
+        TextFlow textFlow = new TextFlow(testoUsername, testoContenuto);
         textFlow.setStyle("-fx-padding: 10;");
 
-        // Aggiungi il TextFlow al contenitore
-        AreaCont.getChildren().add(textFlow);
+        // Aggiunge il TextFlow all'area dedicata ai contenuti
+        areaContenuto.getChildren().add(textFlow);
     }
 
     @FXML
     private void CreaPost() {
-        String TestoPost = AreaNuovoPost.getText().trim();
-        if (TestoPost.isEmpty() || titoloGruppo == null) {
+        //salva nella variabile Testopost il testo scritto dall'utente
+        String testoPost = areaNuovoPost.getText().trim();
+        if (testoPost.isEmpty() || titoloGruppo == null) {
             MostraAlert("Il testo del post non può essere vuoto e devi selezionare un gruppo.");
             return;
         }
 
-        Contenuto nuovoContenuto = new Contenuto(TestoPost, java.sql.Date.valueOf(LocalDate.now()), titoloGruppo, userEmail);
+        //crea il contenuto, lo inserisce nel DB e ricarica i Post
+        Contenuto nuovoContenuto = new Contenuto(testoPost, java.sql.Date.valueOf(LocalDate.now()), titoloGruppo, utenteEmail);
         contenutoDAO.insertContenuto(nuovoContenuto);
-        AreaNuovoPost.clear();
-        MostraPost(titoloGruppo);
+        areaNuovoPost.clear();
+        MostraContenuti(titoloGruppo);
     }
 
     @FXML
     private void Cercagruppo() {
-        String CercaTesto = FieldCercaTesto.getText().trim();
-        if (CercaTesto.isEmpty()) {
+        //mi salvo nella variabile sottostante ciò che l'utente ha cercato
+        String cercaTesto = fieldCercaTesto.getText().trim();
+        if (cercaTesto.isEmpty()) {
             MostraAlert("Il campo di ricerca non può essere vuoto.");
             return;
         }
-
-        List<Gruppo> gruppi = gruppoDAO.CercaGruppi(CercaTesto);
-        CercaGruppi.getChildren().clear();
+        //crea una lista con i gruppi estratti dalla ricerca
+        List<Gruppo> gruppi = gruppoDAO.CercaGruppi(cercaTesto);
+        cercaGruppi.getChildren().clear();
         for (Gruppo gruppo : gruppi) {
-            MostraGruppo(gruppo.getTitolo());
+            MostraGruppoCercato(gruppo.getTitolo()); //li mostra attraverso i bottoni(vedi metodo sotto)
         }
     }
 
-    private void MostraGruppo(String NomiGruppi) {
-        javafx.scene.control.Button groupButton = new javafx.scene.control.Button(NomiGruppi);
-        groupButton.setOnAction(event -> {
-            titoloGruppo = NomiGruppi;
-            Partecipante = partecipanteDAO.GiaPartecipante(userEmail, titoloGruppo);
+    private void MostraGruppoCercato(String NomeGruppo) {
+        javafx.scene.control.Button BottoneGruppo = new javafx.scene.control.Button(NomeGruppo);
+        BottoneGruppo.setOnAction(event -> {
+            titoloGruppo = NomeGruppo;
+
+            //se gia partecipi ti disabilità il pulsante iscrivitiButton
+            Partecipante = partecipanteDAO.GiaPartecipante(utenteEmail, titoloGruppo);
             iscrivitiButton.setDisable(Partecipante);
-            AreaCont.getChildren().clear();
+            areaContenuto.getChildren().clear();
             if (Partecipante) {
-                MostraPost(NomiGruppi);
+                MostraContenuti(NomeGruppo);
             }
-            selectedGroupLabel.setText("Gruppo selezionato: " + NomiGruppi);
+            labelGruppoSelezionato.setText("Gruppo selezionato: " + NomeGruppo);
         });
-        CercaGruppi.getChildren().add(groupButton);
+        //aggiunge il bottone nell'area CercaGruppi
+        cercaGruppi.getChildren().add(BottoneGruppo);
     }
 
     private void MostraAlert(String message) {
@@ -159,36 +176,39 @@ public class HomePageController {
     }
 
     @FXML
-    private void iscrivitiAlGruppo() {
+    private void IscrivitiAlGruppo() {
         if (titoloGruppo == null) {
             MostraAlert("Devi selezionare un gruppo.");
             return;
         }
 
-        // Check if the user is already subscribed to the group
-        if (partecipanteDAO.GiaPartecipante(userEmail, titoloGruppo)) {
+        // Controlla se l'utente partecipa gia in quel gruppo
+        if (partecipanteDAO.GiaPartecipante(utenteEmail, titoloGruppo)) {
             MostraAlert("Sei già iscritto a questo gruppo!");
             return;
         }
-
-        Partecipante nuovoPartecipante = new Partecipante(userEmail, titoloGruppo, Date.valueOf(LocalDate.now()));
-        partecipanteDAO.insertPartecipante(nuovoPartecipante);
-        iscrivitiButton.setDisable(true); // Disable the button after subscription
-        MostraGruppi();
+        //se non partecipa, crea il partecipante
+        Partecipante nuovoPartecipante = new Partecipante(utenteEmail, titoloGruppo, Date.valueOf(LocalDate.now()));
+        partecipanteDAO.insertPartecipante(nuovoPartecipante); //inserisce nel DB
+        iscrivitiButton.setDisable(true); // Disabibilita il bottone dopo l'iscrizione
+        MostraGruppiDovePartecipi();
         Partecipante = true;
-        MostraPost(titoloGruppo);
-        selectedGroupLabel.setText("Gruppo selezionato: " + titoloGruppo);
+        MostraContenuti(titoloGruppo);
+        labelGruppoSelezionato.setText("Gruppo selezionato: " + titoloGruppo);
     }
 
     @FXML
     private void MostraStatistiche() {
         try {
+            //carica la schermata per le statistiche
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Statistiche.fxml"));
             Parent root = loader.load();
 
+            //passa il controller a StatisticheController con l'utente che ha accesso in quel momento
             StatisticheController controller = loader.getController();
-            controller.setUserEmail(userEmail);
+            controller.setUtenteEmail(utenteEmail);
 
+            //non crea una nuova scena, dunque la HomePage rimane nell sfondo
             Stage stage = new Stage();
             stage.setTitle("Statistiche Mensili");
             stage.setScene(new Scene(root));
@@ -199,6 +219,7 @@ public class HomePageController {
     }
 
     public void RitornaLogin(ActionEvent actionEvent) throws IOException {
+        //Carica la pagina iniziale
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load());
@@ -209,19 +230,39 @@ public class HomePageController {
     }
 
     @FXML
-    private void LaciaGruppo() {
+    private void LasciaGruppo() {
         if (titoloGruppo == null) {
             MostraAlert("Devi selezionare un gruppo.");
             return;
         }
 
-        Partecipante partecipante = new Partecipante(userEmail, titoloGruppo, (java.util.Date) null);
-        partecipanteDAO.deletePartecipante(partecipante);
-        iscrivitiButton.setDisable(false); // Enable the button after leaving the group
-        MostraGruppi();
-        selectedGroupLabel.setText("Nessun gruppo selezionato");
-        AreaCont.getChildren().clear();
+        Partecipante partecipante = new Partecipante(utenteEmail, titoloGruppo, null);
+        partecipanteDAO.deletePartecipante(partecipante); //elimina dal DB
+        iscrivitiButton.setDisable(false); // Abilita di nuovo il bottone, dato che ora non partecipi più
+
+        //ricarica i gruppi
+        MostraGruppiDovePartecipi();
+        labelGruppoSelezionato.setText("Nessun gruppo selezionato");
+        areaContenuto.getChildren().clear();
         Partecipante = false;
+    }
+
+    public void VaiAllaSchermataCreaGruppo(ActionEvent actionEvent) throws IOException {
+        //carica la schermata per creare un nuovo gruppo
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreazioneGruppo.fxml"));
+        Parent root = fxmlLoader.load();  // carica il file FXML e costruisce la scena
+
+        //passa il controller a CreazioneGruppoController con l'utente che ha accesso in quel momento
+        CreazioneGruppoController controller = fxmlLoader.getController();
+        controller.setUtenteEmail(utenteEmail);
+
+        // Ottieni la finestra corrente e imposta la nuova scena
+        Stage stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);  // utilizza il root appena caricato
+        stage.setTitle("Creazione Gruppo");
+        stage.setScene(scene);
+        stage.show();
+        stage.setResizable(false);
     }
 
 }
